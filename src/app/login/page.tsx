@@ -1,15 +1,29 @@
 import { LoginForm } from "./form";
-import Header from "@/components/header.component";
 
-export default function LoginPage() {
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "../../lib/auth"
+
+import { redirect } from 'next/navigation';
+
+import { Badge, Card, Metric } from "@tremor/react";
+
+export default async function LoginPage() {
+  const session = await getServerSession(authOptions)
+  if (session) redirect('/');
+
   return (
     <>
-      <Header />
-      <section className="bg-ct-blue-600 min-h-screen pt-20">
-        <div className="container mx-auto px-6 py-12 h-full flex justify-center items-center">
-          <div className="md:w-8/12 lg:w-5/12 bg-white px-8 py-10">
+      <section className="min-h-screen pt-20 bg-white">
+        <div className="container flex items-center justify-center h-full px-6 py-12 mx-auto">
+          <Card className="px-8 py-10 md:w-8/12 lg:w-5/12">
+            <div className="flex items-center justify-center gap-2 mb-5">
+              <Metric>
+                ROI Dashoard
+              </Metric>
+              <Badge size="xs" className="text-lg">BETA</Badge>
+            </div>
             <LoginForm />
-          </div>
+          </Card>
         </div>
       </section>
     </>

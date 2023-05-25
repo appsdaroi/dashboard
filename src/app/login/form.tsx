@@ -4,11 +4,15 @@ import { signIn } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 
+import { UserIcon, LockClosedIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
+
+import { TextInput, Button } from "@tremor/react";
+
 export const LoginForm = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [formValues, setFormValues] = useState({
-    email: "",
+    name: "",
     password: "",
   });
   const [error, setError] = useState("");
@@ -20,11 +24,11 @@ export const LoginForm = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      setFormValues({ email: "", password: "" });
+      setFormValues({ name: "", password: "" });
 
       const res = await signIn("credentials", {
         redirect: false,
-        email: formValues.email,
+        name: formValues.name,
         password: formValues.password,
         callbackUrl,
       });
@@ -35,7 +39,7 @@ export const LoginForm = () => {
       if (!res?.error) {
         router.push(callbackUrl);
       } else {
-        setError("invalid email or password");
+        setError("invalid name or password");
       }
     } catch (error: any) {
       setLoading(false);
@@ -57,35 +61,43 @@ export const LoginForm = () => {
         <p className="py-4 mb-6 text-center bg-red-300 rounded">{error}</p>
       )}
       <div className="mb-6">
-        <input
+        <TextInput 
           required
-          type="email"
-          name="email"
-          value={formValues.email}
+          type="text"
+          name="name"
+          value={formValues.name}
           onChange={handleChange}
-          placeholder="Email address"
-          className={`${input_style}`}
+          placeholder="Usuário"
+          icon={UserIcon}
+          className="py-3"
         />
       </div>
       <div className="mb-6">
-        <input
+        <TextInput 
           required
           type="password"
           name="password"
           value={formValues.password}
           onChange={handleChange}
-          placeholder="Password"
-          className={`${input_style}`}
+          placeholder="Senha"
+          icon={LockClosedIcon}
+          className="py-3"
         />
       </div>
-      <button
+      <Button
+        size="md"
         type="submit"
-        style={{ backgroundColor: `${loading ? "#ccc" : "#3446eb"}` }}
-        className="inline-block w-full py-4 text-sm font-medium leading-snug text-white uppercase transition duration-150 ease-in-out bg-blue-600 rounded shadow-md px-7 hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg"
+        variant="primary"
+        // style={{ opacity: `${loading ? "0.5" : "1"}` }}
+        // className="inline-block w-full py-4 text-sm font-medium leading-snug text-white uppercase transition duration-150 ease-in-out bg-blue-600 rounded shadow-md px-7 hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg"
         disabled={loading}
+        className="w-full py-3"
+        icon={ArrowRightIcon}
+        loading={loading}
+        loadingText="Entrando..."
       >
-        {loading ? "loading..." : "Sign In"}
-      </button>
+        Entrar
+      </Button>
     </form>
   );
 };
