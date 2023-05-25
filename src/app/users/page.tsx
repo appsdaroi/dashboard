@@ -30,7 +30,7 @@ interface Response {
 }
 
 const getUsersData = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users`, { next: { revalidate: 30 } });
   return res.json();
 }
 

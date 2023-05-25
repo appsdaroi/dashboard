@@ -4,9 +4,9 @@ import { signIn } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 
-import { UserIcon, LockClosedIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
+import { UserIcon, LockClosedIcon, ArrowRightIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
-import { TextInput, Button } from "@tremor/react";
+import { TextInput, Button, Callout } from "@tremor/react";
 
 export const LoginForm = () => {
   const router = useRouter();
@@ -39,7 +39,7 @@ export const LoginForm = () => {
       if (!res?.error) {
         router.push(callbackUrl);
       } else {
-        setError("invalid name or password");
+        setError("Usuário ou senha inválidos.");
       }
     } catch (error: any) {
       setLoading(false);
@@ -52,16 +52,20 @@ export const LoginForm = () => {
     setFormValues({ ...formValues, [name]: value });
   };
 
-  const input_style =
-    "form-control block w-full px-4 py-5 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none";
-
   return (
     <form onSubmit={onSubmit}>
       {error && (
-        <p className="py-4 mb-6 text-center bg-red-300 rounded">{error}</p>
+        <Callout
+          className="h-12 mt-4 mb-6"
+          title="Erro ao realizar login"
+          icon={ExclamationTriangleIcon}
+          color="rose"
+        >
+          Usuário ou senha inválidos.
+        </Callout>
       )}
       <div className="mb-6">
-        <TextInput 
+        <TextInput
           required
           type="text"
           name="name"
@@ -73,7 +77,7 @@ export const LoginForm = () => {
         />
       </div>
       <div className="mb-6">
-        <TextInput 
+        <TextInput
           required
           type="password"
           name="password"
@@ -88,8 +92,6 @@ export const LoginForm = () => {
         size="md"
         type="submit"
         variant="primary"
-        // style={{ opacity: `${loading ? "0.5" : "1"}` }}
-        // className="inline-block w-full py-4 text-sm font-medium leading-snug text-white uppercase transition duration-150 ease-in-out bg-blue-600 rounded shadow-md px-7 hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg"
         disabled={loading}
         className="w-full py-3"
         icon={ArrowRightIcon}
