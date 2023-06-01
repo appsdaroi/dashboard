@@ -1,14 +1,7 @@
-import { prisma } from "@/lib/prisma";
-import { compare } from "bcryptjs";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import axios from "axios";
-
-interface Session {
-  id: string,
-  username: string
-}
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -35,32 +28,23 @@ export const authOptions: NextAuthOptions = {
         if (res.data.status !== 200) return null
 
         return {
-          id: res.data.response.id,
-          name: res.data.response.username,
+          session: {
+            user: {
+              id: res.data.response.id,
+              name: res.data.response.username,
+              token: res.data.response.api_token
+            }
+          }
         };
       },
     }),
   ],
   callbacks: {
-    session: ({ session, token }) => {
-      return {
-        ...session,
-        user: {
-          name: token.name,
-          id: token.id,
-        },
-      };
-    },
     jwt: ({ token, user }) => {
-      if (user) {
-        const u = user as unknown as any;
-        return {
-          ...token,
-          name: u.name,
-          id: u.id,
-        };
-      }
-      return token;
+      return { ...token, ...user }
+    },
+    session: ({ session, token }) => {
+      return { ...session, ...token }
     }
   },
 };

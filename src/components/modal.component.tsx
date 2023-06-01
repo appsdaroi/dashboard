@@ -1,35 +1,26 @@
 import {
     Card,
-    Table,
-    TableHead,
-    TableRow,
-    TableHeaderCell,
-    TableBody,
-    TableCell,
-    Text,
     Flex,
     Title,
-    Button,
     Icon
 } from "@tremor/react";
 
-import { Dispatch, ReactNode, SetStateAction } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { XMarkIcon } from "@heroicons/react/24/outline"
 
 interface Props {
-    content: ReactNode | ReactNode[],
+    content: JSX.Element,
     title: string,
-    state: ModalStateProps[]
-}
-
-interface ModalStateProps {
-    open: boolean,
-    setOpen: (boolean: boolean) => void;
+    state: [
+        modal: {
+            isOpen: boolean,
+            type: string
+        },
+        setOpenModal: (boolean: boolean) => void
+    ]
 }
 
 const Modal = ({ content, title, state }: Props) => {
-    const [open, setOpen] = state;
+    const [open, setOpenModal] = state;
 
     return (
         <>
@@ -38,7 +29,7 @@ const Modal = ({ content, title, state }: Props) => {
                     <Card className="max-w-xl">
                         <Flex className="pb-4">
                             <Title>{title}</Title>
-                            <Icon className="cursor-pointer text-slate-300" icon={XMarkIcon} onClick={() => setOpen(false)} />
+                            <Icon className="cursor-pointer text-slate-300" icon={XMarkIcon} onClick={() => setOpenModal(false)} />
                         </Flex>
                         <Flex flexDirection="col" className="gap-3 p-4">
                             {content}

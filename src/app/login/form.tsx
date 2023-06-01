@@ -1,12 +1,15 @@
 "use client";
 
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 
 import { UserIcon, LockClosedIcon, ArrowRightIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
-import { TextInput, Button, Callout } from "@tremor/react";
+import { TextInput, Button } from "@tremor/react";
+import { toast } from "react-toastify";
+
+import Cookies from "js-cookie";
 
 export const LoginForm = () => {
   const router = useRouter();
@@ -15,13 +18,13 @@ export const LoginForm = () => {
     name: "",
     password: "",
   });
-  const [error, setError] = useState("");
 
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/profile";
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
       setLoading(true);
       setFormValues({ name: "", password: "" });
@@ -33,17 +36,17 @@ export const LoginForm = () => {
         callbackUrl,
       });
 
-      setLoading(false);
+      const session = await getSession();
+      Cookies.set('user.token', session?.session.user.token)
 
-      console.log(res);
-      if (!res?.error) {
-        router.push(callbackUrl);
-      } else {
-        setError("Usuário ou senha inválidos.");
-      }
-    } catch (error: any) {
+      if (!res?.error) return router.push(callbackUrl);
+
       setLoading(false);
-      setError(error);
+      toast.error("Usuário ou senha inválidos.");
+    } catch (error: any) {
+
+      setLoading(false);
+      toast.error(error);
     }
   };
 
@@ -54,16 +57,6 @@ export const LoginForm = () => {
 
   return (
     <form onSubmit={onSubmit}>
-      {error && (
-        <Callout
-          className="h-12 mt-4 mb-6"
-          title="Erro ao realizar login"
-          icon={ExclamationTriangleIcon}
-          color="rose"
-        >
-          Usuário ou senha inválidos.
-        </Callout>
-      )}
       <div className="mb-6">
         <TextInput
           required
@@ -73,7 +66,6 @@ export const LoginForm = () => {
           onChange={handleChange}
           placeholder="Usuário"
           icon={UserIcon}
-          className="py-3"
         />
       </div>
       <div className="mb-6">
@@ -85,7 +77,6 @@ export const LoginForm = () => {
           onChange={handleChange}
           placeholder="Senha"
           icon={LockClosedIcon}
-          className="py-3"
         />
       </div>
       <Button

@@ -16,31 +16,49 @@ import {
 import { useState } from "react";
 import { toast } from 'react-toastify';
 import { UserIcon, LockClosedIcon, PlusIcon } from "@heroicons/react/24/outline"
+import { FetchWithToken } from "@/lib/fetch";
+import { UserProps } from "../types/user";
 
-interface UserProps {
-    username: string,
-    password: string
+interface ModalStateProps {
+    state: [
+        _: boolean,
+        setOpen: (boolean: boolean) => void
+    ]
 }
 
-const submitForm = async ({ username, password }: UserProps, setFetching: (state: boolean) => void) => {
-    setFetching(true);
-
-    setTimeout(() => {
-        if (!username || !password) {
-            setFetching(false);
-            return toast.error("Preencha os dados corretamente!")
-        }
-    }, 5000);
-
-}
-
-const CreateUserForm = () => {
+const CreateUserForm = ({ state }: ModalStateProps) => {
     const [info, setInfo] = useState({
         username: "",
         password: ""
     })
 
+    const [_, setOpen] = state;
     const [fetching, setFetching] = useState(false)
+
+    const submitForm = async ({ username, password }: UserProps, setFetching: (state: boolean) => void) => {
+        setFetching(true);
+
+        if (!username || !password) {
+            setFetching(false);
+            return toast.error("Preencha os dados corretamente!")
+        }
+
+        try {
+            const res = await FetchWithToken({
+                path: "users",
+                method: "POST",
+                data: { username, password }, 
+            });
+    
+            if (res.status !== 200) return toast.error("Erro ao criar usuário.")
+            toast.success(`Usuário ${username} foi criado com sucesso!`)
+            setOpen(false)
+        } catch {
+            setFetching(false);
+            return toast.error("Erro ao alterar senha do usuário.")
+        }
+
+    }
 
     return (
         <>

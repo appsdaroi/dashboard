@@ -13,15 +13,9 @@ import { ArrowLeftOnRectangleIcon, UserIcon } from "@heroicons/react/24/outline"
 
 const Header = () => {
   return (
-    <header className="h-20 bg-white border-b">
-      <nav className="container flex items-center justify-between h-full">
-        <div className="flex items-center justify-center gap-2">
-          <Link href="/" className="text-xl font-semibold text-slate-700">
-            ROI Dashoard
-          </Link>
-          <Badge size="xs" className="text-lg">BETA</Badge>
-        </div>
-        <Menu as="div" className="relative inline-block text-left">
+    <header className="h-20 bg-white rounded-lg shadow-lg shadow-slate-100">
+      <nav className="flex items-center justify-between h-full px-4">
+        <Menu as="div" className="relative inline-block ml-auto text-left">
           <div className="p-0.5 border-2 rounded-full flex">
             <Menu.Button className="rounded-full cursor-pointer w-7 h-7" style={{ background: gradient("admin") }}>
             </Menu.Button>

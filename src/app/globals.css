@@ -1,10 +1,72 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 html {
-  font-family: 'Inter', sans-serif;
   @apply text-slate-700;
+  font-family: 'Hanken Grotesk', sans-serif;
+  background-color: #f8fafb;
+}
+
+/* Tremor customization */
+.tremor-TextInput-root {
+  @apply rounded-[15px];
+  @apply py-2;
+}
+.tremor-Button-root.bg-blue-500 {
+  @apply transition-all;
+  @apply rounded-[15px];
+  @apply !bg-primary-500;
+  @apply hover:!bg-primary-600;
+  @apply hover:scale-105;
+  @apply hover:shadow-lg;
+  @apply hover:shadow-primary-500/20;
+  @apply py-3.5;
+}
+.tremor-Button-root {
+  @apply rounded-full;
+}
+.tremor-Button-root.bg-blue-500.small {
+  @apply rounded-full;
+  @apply py-2;
+}
+.tremor-Button-root.bg-red-500 {
+  @apply transition-all;
+  @apply rounded-[15px];
+  @apply !bg-red-500;
+  @apply hover:!bg-red-600;
+  @apply hover:scale-105;
+  @apply hover:shadow-lg;
+  @apply hover:shadow-red-500/20;
+  @apply py-3.5;
+}
+.tremor-Card-root {
+  @apply border-0;
+  @apply ring-0;
+  @apply shadow-lg;
+  @apply shadow-slate-500/10;
+  @apply rounded-[15px];
+}
+
+aside a {
+  @apply block;
+  @apply w-full;
+  @apply h-full;
+  @apply p-3;
+  @apply rounded-lg;
+  @apply transition-all;
+}
+
+aside a:not(.active) {
+  @apply text-white;
+}
+
+aside a.active {
+  @apply bg-white;
+  @apply text-primary-500;
+  @apply shadow-lg;
+  @apply shadow-primary-900/20;
+  @apply scale-105;
 }

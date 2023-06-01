@@ -1,82 +1,47 @@
-import { Card, Subtitle, Flex, Metric } from "@tremor/react";
-import Link from "next/link";
+import { Subtitle, Flex, Metric } from "@tremor/react";
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
-import { UsersIcon } from "@heroicons/react/24/outline";
+import { CardModule } from "../components/card.component"
+import moment from "moment";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
-  const user = session?.user;
+  const user = session?.session.user;
+
+  const greeting = () => {
+    const hour = moment().hour();
+
+    if (hour > 16) {
+      return "Boa noite";
+    }
+
+    if (hour > 11) {
+      return "Boa tarde";
+    }
+
+    return 'Bom dia';
+  }
 
   return (
     <>
-      <section className="min-h-screen pt-20 bg-white">
-
-        <Flex flexDirection="col" alignItems="start" className="max-w-5xl gap-px mx-auto mb-8 text-left">
-          <Metric>Olá {user?.name}!</Metric>
+      <section>
+        <Flex flexDirection="col" alignItems="start" className="gap-px mx-auto mb-8 text-left">
+          <Metric>{greeting()}, {user?.name}!</Metric>
           <Subtitle>O que você deseja fazer hoje?</Subtitle>
-
         </Flex>
 
-        <Flex justifyContent="start" className="flex-wrap max-w-5xl gap-5 mx-auto">
-          <Link className="w-full max-w-[200px] group/card" href="/users">
-            <Card className="flex flex-col gap-3">
-              <Flex justifyContent="center" className="w-full rounded aspect-square bg-slate-100">
-                <UsersIcon className="w-12 h-12 transition-transform group-hover/card:scale-125" />
-              </Flex>
+        <div className="grid grid-cols-6 grid-rows-1 p-4 mx-auto gap-7">
+          <CardModule title="Geren. usuários" image="./images/cards/users.jpg" />
+          <CardModule title="Playpix" image="./images/cards/playpix.jpg" />
+          <CardModule title="Itaú" image="./images/cards/itau.jpg" />
+        </div>
 
-              <Subtitle>Geren. usuários</Subtitle>
-            </Card>
-          </Link>
-          <Link className="w-full max-w-[200px] group/card" href="/users">
-            <Card className="flex flex-col gap-3">
-              <Flex justifyContent="center" className="w-full rounded aspect-square bg-slate-100">
-                <UsersIcon className="w-12 h-12 transition-transform group-hover/card:scale-125" />
-              </Flex>
-
-              <Subtitle>Usuários</Subtitle>
-            </Card>
-          </Link>
-          <Link className="w-full max-w-[200px] group/card" href="/users">
-            <Card className="flex flex-col gap-3">
-              <Flex justifyContent="center" className="w-full rounded aspect-square bg-slate-100">
-                <UsersIcon className="w-12 h-12 transition-transform group-hover/card:scale-125" />
-              </Flex>
-
-              <Subtitle>Usuários</Subtitle>
-            </Card>
-          </Link>
-          <Link className="w-full max-w-[200px] group/card" href="/users">
-            <Card className="flex flex-col gap-3">
-              <Flex justifyContent="center" className="w-full rounded aspect-square bg-slate-100">
-                <UsersIcon className="w-12 h-12 transition-transform group-hover/card:scale-125" />
-              </Flex>
-
-              <Subtitle>Usuários</Subtitle>
-            </Card>
-          </Link>
-          <Link className="w-full max-w-[200px] group/card" href="/users">
-            <Card className="flex flex-col gap-3">
-              <Flex justifyContent="center" className="w-full rounded aspect-square bg-slate-100">
-                <UsersIcon className="w-12 h-12 transition-transform group-hover/card:scale-125" />
-              </Flex>
-
-              <Subtitle>Usuários</Subtitle>
-            </Card>
-          </Link>
-          <Link className="w-full max-w-[200px] group/card" href="/users">
-            <Card className="flex flex-col gap-3">
-              <Flex justifyContent="center" className="w-full rounded aspect-square bg-slate-100">
-                <UsersIcon className="w-12 h-12 transition-transform group-hover/card:scale-125" />
-              </Flex>
-
-              <Subtitle>Usuários</Subtitle>
-            </Card>
-          </Link>
-        </Flex>
       </section>
     </>
   );
 }
+
+
+// D:\OneDrive\Documentos\Projetos APPDAROI\dashboard\public\images\cards

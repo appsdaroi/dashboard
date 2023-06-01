@@ -13,14 +13,16 @@ export default async function LoginPage() {
 
   return (
     <>
-      <section className="min-h-screen pt-20 bg-white">
+      <section className="min-h-screen pt-20">
         <div className="container flex items-center justify-center h-full px-6 py-12 mx-auto">
           <Card className="px-8 py-10 md:w-8/12 lg:w-5/12">
-            <div className="flex items-center justify-center gap-2 mb-5">
+            <div className="flex items-center justify-center gap-2 mb-8">
               <Metric>
-                ROI Dashoard
+                ROI Dashboard
               </Metric>
-              <Badge size="xs" className="text-lg">BETA</Badge>
+              <span className="p-1 text-[0.5rem] text-white rounded bg-primary-600">
+                BETA
+              </span>
             </div>
             <LoginForm />
           </Card>

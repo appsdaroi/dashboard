@@ -4,7 +4,7 @@ interface Props {
 }
 
 const Skeleton = ({ className, height }: Props) => (
-    <div className={`bg-gray-200 rounded w-full ${className} ${height ? `h-[${height}]` : "h-3"}`}/>
+    <div className={`bg-gray-200 rounded w-full h-6 ${className}`}/>
 )
 
 export { Skeleton }

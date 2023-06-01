@@ -23,6 +23,7 @@ export default function RootLayout({
         <NextAuthProvider>
           {children}
         </NextAuthProvider>
+        
         <ToastContainer
           position="bottom-center"
         />

@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+
+const colors = require('tailwindcss/colors');
+
 module.exports = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -8,9 +11,7 @@ module.exports = {
   ],
    theme: {
     extend: {
-      fontFamily: {
-        Poppins: ['Inter, sans-serif'],
-      },
+
       container: {
         center: true,
         padding: '1rem',
@@ -20,6 +21,10 @@ module.exports = {
           '2xl': '1125px',
         },
       },
+
+      colors: {
+        primary: colors.indigo,
+      }
     },
   },
   plugins: [],
