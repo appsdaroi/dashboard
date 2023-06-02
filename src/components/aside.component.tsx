@@ -5,7 +5,7 @@ import { getSession } from "next-auth/react";
 
 import React, { useState, useEffect } from "react";
 import Avatar, { genConfig } from 'react-nice-avatar'
-import { ArrowDownRightIcon } from "@heroicons/react/24/outline";
+import { ArrowDownRightIcon, ChevronRightIcon, CubeTransparentIcon, UsersIcon, HomeModernIcon } from "@heroicons/react/24/outline";
 import { signOut } from "next-auth/react";
 import { Skeleton } from "./skeleton.component";
 
@@ -14,6 +14,7 @@ import { usePathname } from 'next/navigation';
 
 const Aside = () => {
     const [username, setUsername] = useState("default");
+    const [activeSubmenu, setActiveSubmenu] = useState("");
     const pathname = usePathname();
 
     const renderAvatar = () => {
@@ -31,6 +32,9 @@ const Aside = () => {
         }
 
         getUserSession()
+
+        console.log(["/playpix"].includes(pathname))
+        console.log(pathname)
     }, [])
 
     return (
@@ -46,20 +50,42 @@ const Aside = () => {
                         </span>
                     </Flex>
 
-                    <ul className="flex-1 w-full">
+                    <ul className="flex flex-col flex-1 w-full gap-2">
                         <li>
-                            <Link href="/" className={pathname == "/" ? "active" : ""}>Início</Link>
+                            <Link onClick={() => setActiveSubmenu("")} href="/" className={pathname == "/" ? "active" : ""}>
+                                <Icon size="sm" icon={CubeTransparentIcon} /> Visão geral
+                            </Link>
                         </li>
                         <li>
-                            <Link href="/users" className={pathname == "/users" ? "active" : ""}>Gerenciar usuários</Link>
+                            <Link onClick={() => setActiveSubmenu("")} href="/users" className={pathname == "/users" ? "active" : ""}>
+                                <Icon size="sm" icon={UsersIcon} /> Gerenciar usuários
+                            </Link>
+                        </li>
+                        <li>
+                            <a
+                                onClick={() => setActiveSubmenu(activeSubmenu === "houses" ? "" : "houses")}
+                                className={`cursor-pointer group ${(activeSubmenu === "houses" || ["/playpix"].includes(pathname)) && "active"}`}
+                            >
+                                <Icon size="sm" icon={HomeModernIcon} /> Casas <Icon className="ml-auto group-[.active]:rotate-90 transition-all" size="xs" icon={ChevronRightIcon} />
+                            </a>
+
+                            {(activeSubmenu === "houses" || ["/playpix"].includes(pathname)) && (
+                                <ul className="flex-1 w-full scale-90">
+                                    <li>
+                                        <Link href="/playpix" className={pathname == "/playpix" ? "active" : ""}>
+                                            <Icon size="sm" icon={CubeTransparentIcon} /> Playpix
+                                        </Link>
+                                    </li>
+                                </ul>
+                            )}
                         </li>
                     </ul>
 
                     {username === "default" ? (
                         <Flex justifyContent="start" alignItems="center" className="gap-3 animate-pulse">
-                            <Skeleton className="!w-8 h-8 rounded-full aspect-square bg-primary-700"/>
-                            <Skeleton className="flex-1 bg-primary-700"/>
-                            <Skeleton className="!w-8 h-8 rounded aspect-square bg-primary-700"/>
+                            <Skeleton className="!w-8 h-8 rounded-full aspect-square bg-primary-700" />
+                            <Skeleton className="flex-1 bg-primary-700" />
+                            <Skeleton className="!w-8 h-8 rounded aspect-square bg-primary-700" />
                         </Flex>
                     ) : (
                         <Flex justifyContent="start" alignItems="center" className="gap-3">

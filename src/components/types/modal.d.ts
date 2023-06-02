@@ -1,5 +1,5 @@
 export interface ModalStateProps {
     isOpen: boolean,
-    type: "createUser" | "changePassword" | "deleteUser",
+    type: "createUser" | "editUser" | "deleteUser",
     data: { [key: string]: any }
 }

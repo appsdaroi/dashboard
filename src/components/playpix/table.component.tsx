@@ -13,7 +13,6 @@ import {
     Flex,
     Button,
     Icon,
-    TextInput
 } from "@tremor/react";
 
 import { UserPlusIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
@@ -22,12 +21,11 @@ import React, { useEffect, useState } from "react";
 import { Skeleton } from "../skeleton.component";
 import { Modal } from "../modal.component";
 
-import { CreateUserForm } from "../users/createUserForm.component"
-import { DeleteUserForm } from "../users/deleteUserForm.component"
-import { ChangePasswordForm } from "../users/changePasswordForm.component"
+import { EditUserForm } from "./editUserForm.component"
 import moment from "moment";
 
 import { FetchWithToken } from "@/lib/fetch"
+import { CentsToReais } from "@/helpers/money"
 
 import { ModalStateProps } from "../types/modal";
 
@@ -44,24 +42,16 @@ const UsersTable = () => {
     });
 
     const modalContent = {
-        createUser: {
-            el: <CreateUserForm state={[modal, setOpenModal]} />,
-            title: "Adicionar novo usuário"
-        },
         editUser: {
-            el: <ChangePasswordForm state={[modal, setOpenModal]} />,
-            title: "Alterar senha do usuário"
-        },
-        deleteUser: {
-            el: <DeleteUserForm state={[modal, setOpenModal]} />,
-            title: "Excluir usuário"
+            el: <EditUserForm state={[modal, setOpenModal]} />,
+            title: "Alterar saldo e extratos"
         },
     }
 
     const getUsersData = async () => {
 
         const { data } = await FetchWithToken({
-            path: "users",
+            path: "playpix",
             method: "GET",
             data: {},
         });
@@ -78,7 +68,7 @@ const UsersTable = () => {
         <>
             {modal.isOpen && <Modal content={modalContent[modal.type].el} state={[modal, setOpenModal]} title={modalContent[modal.type].title} />}
             <Flex alignItems="center" justifyContent="start" className="gap-5 mb-5">
-                <Metric>Gerenciar usuários</Metric>
+                <Metric>Saldos e extratos Playpix</Metric>
                 <Button className="small" onClick={() => setOpenModal({
                     isOpen: true,
                     type: "createUser",
@@ -91,6 +81,7 @@ const UsersTable = () => {
                         <TableRow>
                             <TableHeaderCell>#</TableHeaderCell>
                             <TableHeaderCell>Usuário</TableHeaderCell>
+                            <TableHeaderCell>Saldo</TableHeaderCell>
                             <TableHeaderCell>Criação</TableHeaderCell>
                             <TableHeaderCell>Última edição</TableHeaderCell>
                             <TableHeaderCell>Ações</TableHeaderCell>
@@ -114,59 +105,38 @@ const UsersTable = () => {
                         ) : (
                             <>
                                 {
-                                    data.data.map((item) => (
-                                        <TableRow key={item.id}>
-                                            <TableCell>{item.id}</TableCell>
+                                    data.response.map((item) => (
+                                        <TableRow key={item.user_id}>
+                                            <TableCell>{item.user_id}</TableCell>
                                             <TableCell>{item.username}</TableCell>
+                                            <TableCell>{CentsToReais(item.balance)}</TableCell>
                                             <TableCell>{(item.created_at && moment(item.created_at).format("DD/MM/YYYY hh:mm:ss")) || <Text className="opacity-50">Não informado</Text>}</TableCell>
                                             <TableCell>{(item.updated_at && moment(item.updated_at).format("DD/MM/YYYY hh:mm:ss")) || <Text className="opacity-50">Não informado</Text>}</TableCell>
                                             <TableCell>
                                                 <Flex justifyContent="start" className="gap-2 w-max">
-                                                    {item.id === 1 ? (
-                                                        <>
-
-                                                            <Icon
-                                                                icon={PencilSquareIcon}
-                                                                variant="solid"
-                                                                tooltip="Não é possível alterar a senha do administrador"
-                                                                className="opacity-50"
-                                                            />
-                                                            <Icon
-                                                                icon={TrashIcon}
-                                                                color="red"
-                                                                variant="solid"
-                                                                tooltip="Não é possível excluir o administrador"
-                                                                className="opacity-50"
-                                                            />
-                                                        </>
-                                                    ) : (
-                                                        <>
-                                                            <Icon
-                                                                icon={PencilSquareIcon}
-                                                                variant="solid"
-                                                                tooltip={`Alterar senha de ${item.username}`}
-                                                                className="cursor-pointer"
-                                                                onClick={() => setOpenModal({
-                                                                    isOpen: true,
-                                                                    type: "editUser",
-                                                                    data: item
-                                                                })}
-                                                            />
-                                                            <Icon
-                                                                icon={TrashIcon}
-                                                                color="red"
-                                                                variant="solid"
-                                                                tooltip={`Excluir usuário ${item.username}`}
-                                                                className="cursor-pointer"
-                                                                onClick={() => setOpenModal({
-                                                                    isOpen: true,
-                                                                    type: "deleteUser",
-                                                                    data: item
-                                                                })}
-                                                            />
-                                                        </>
-                                                    )}
-
+                                                    <Icon
+                                                        icon={PencilSquareIcon}
+                                                        variant="solid"
+                                                        tooltip={`Alterar saldo e extratos de ${item.username}`}
+                                                        className="cursor-pointer"
+                                                        onClick={() => setOpenModal({
+                                                            isOpen: true,
+                                                            type: "editUser",
+                                                            data: item
+                                                        })}
+                                                    />
+                                                    <Icon
+                                                        icon={TrashIcon}
+                                                        color="red"
+                                                        variant="solid"
+                                                        tooltip={`Excluir saldo e extratos de ${item.username}`}
+                                                        className="cursor-pointer"
+                                                        onClick={() => setOpenModal({
+                                                            isOpen: true,
+                                                            type: "deleteUser",
+                                                            data: item
+                                                        })}
+                                                    />
                                                 </Flex>
                                             </TableCell>
                                         </TableRow>

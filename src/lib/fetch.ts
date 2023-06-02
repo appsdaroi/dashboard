@@ -15,7 +15,7 @@ const FetchWithToken = async ({ path, method, data }: FetchProps) => {
     return await axios({
         url: `${process.env.NEXT_PUBLIC_API_URL}/api/${path}`,
         method: method || "POST",
-        data: data,
+        data: data || {},
         headers: {
             Authorization: `Bearer ${Cookies.get('user.token')}`,
             Accept: 'application/json',

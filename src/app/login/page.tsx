@@ -5,7 +5,7 @@ import { authOptions } from "../../lib/auth"
 
 import { redirect } from 'next/navigation';
 
-import { Badge, Card, Metric } from "@tremor/react";
+import { Badge, Card, Flex, Metric } from "@tremor/react";
 
 export default async function LoginPage() {
   const session = await getServerSession(authOptions)
@@ -16,14 +16,14 @@ export default async function LoginPage() {
       <section className="min-h-screen pt-20">
         <div className="container flex items-center justify-center h-full px-6 py-12 mx-auto">
           <Card className="px-8 py-10 md:w-8/12 lg:w-5/12">
-            <div className="flex items-center justify-center gap-2 mb-8">
-              <Metric>
-                ROI Dashboard
-              </Metric>
-              <span className="p-1 text-[0.5rem] text-white rounded bg-primary-600">
+            <Flex justifyContent="center" className="mb-8 font-semibold">
+              <Metric color="slate">roi</Metric>
+              <Metric color="slate" className="opacity-50">dashboard</Metric>
+
+              <span className="p-1 ml-2 text-[0.5rem] text-white rounded bg-primary-600">
                 BETA
               </span>
-            </div>
+            </Flex>
             <LoginForm />
           </Card>
         </div>

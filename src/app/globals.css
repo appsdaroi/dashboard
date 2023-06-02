@@ -57,9 +57,18 @@ aside a {
   @apply p-3;
   @apply rounded-lg;
   @apply transition-all;
+  @apply flex;
+  @apply justify-start;
+  @apply items-center;
+  @apply gap-1;
+  @apply h-auto;
 }
 
 aside a:not(.active) {
+  @apply text-white;
+}
+
+aside a:not(.active) .tremor-Icon-root {
   @apply text-white;
 }
 
@@ -69,4 +78,8 @@ aside a.active {
   @apply shadow-lg;
   @apply shadow-primary-900/20;
   @apply scale-105;
+}
+
+aside a.active .tremor-Icon-root {
+  @apply text-primary-500;
 }
