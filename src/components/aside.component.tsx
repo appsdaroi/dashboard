@@ -17,6 +17,11 @@ const Aside = () => {
     const [activeSubmenu, setActiveSubmenu] = useState("");
     const pathname = usePathname();
 
+    const houses = [
+        "/playpix",
+        "/socialmoney"
+    ]
+
     const renderAvatar = () => {
         const config = genConfig(username);
 
@@ -32,9 +37,6 @@ const Aside = () => {
         }
 
         getUserSession()
-
-        console.log(["/playpix"].includes(pathname))
-        console.log(pathname)
     }, [])
 
     return (
@@ -64,16 +66,21 @@ const Aside = () => {
                         <li>
                             <a
                                 onClick={() => setActiveSubmenu(activeSubmenu === "houses" ? "" : "houses")}
-                                className={`cursor-pointer group ${(activeSubmenu === "houses" || ["/playpix"].includes(pathname)) && "active"}`}
+                                className={`cursor-pointer group ${(activeSubmenu === "houses" || houses.includes(pathname)) && "active"}`}
                             >
                                 <Icon size="sm" icon={HomeModernIcon} /> Casas <Icon className="ml-auto group-[.active]:rotate-90 transition-all" size="xs" icon={ChevronRightIcon} />
                             </a>
 
-                            {(activeSubmenu === "houses" || ["/playpix"].includes(pathname)) && (
+                            {(activeSubmenu === "houses" || houses.includes(pathname)) && (
                                 <ul className="flex-1 w-full scale-90">
                                     <li>
                                         <Link href="/playpix" className={pathname == "/playpix" ? "active" : ""}>
                                             <Icon size="sm" icon={CubeTransparentIcon} /> Playpix
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/socialmoney" className={pathname == "/socialmoney" ? "active" : ""}>
+                                            <Icon size="sm" icon={CubeTransparentIcon} /> Socialmoney
                                         </Link>
                                     </li>
                                 </ul>

@@ -1,5 +1,5 @@
 {
-  "name": "nextauth-nextjs13-prisma",
+  "name": "roidashboard",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -36,6 +36,7 @@
     "random-gradient": "^0.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.4.1",
     "react-nice-avatar": "^1.4.0",
     "react-simply-carousel": "^9.0.1",
     "react-toastify": "^9.1.3",

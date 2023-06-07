@@ -22,6 +22,8 @@ import { Skeleton } from "../skeleton.component";
 import { Modal } from "../modal.component";
 
 import { EditUserForm } from "./editUserForm.component"
+import { CreateUserForm } from "./createUserForm.component"
+import { DeleteUserForm } from "./deleteUserForm.component"
 import moment from "moment";
 
 import { FetchWithToken } from "@/lib/fetch"
@@ -45,6 +47,14 @@ const UsersTable = () => {
         editUser: {
             el: <EditUserForm state={[modal, setOpenModal]} />,
             title: "Alterar saldo e extratos"
+        },
+        createUser: {
+            el: <CreateUserForm state={[modal, setOpenModal]} />,
+            title: "Criar novo saldo e extrato"
+        },
+        deleteUser: {
+            el: <DeleteUserForm state={[modal, setOpenModal]} />,
+            title: "Excluir saldo e extratos"
         },
     }
 
@@ -93,6 +103,7 @@ const UsersTable = () => {
                                 {
                                     [...Array(5)].map((_, i) => (
                                         <TableRow key={i} className="animate-pulse">
+                                            <TableCell><Skeleton /></TableCell>
                                             <TableCell><Skeleton /></TableCell>
                                             <TableCell><Skeleton /></TableCell>
                                             <TableCell><Skeleton /></TableCell>

@@ -25,7 +25,7 @@ export const authOptions: NextAuthOptions = {
           password: credentials.password,
         })
 
-        if (res.data.status !== 200) return null
+        if (res.data.status !== 200) throw new Error("Usuário ou senha incorretos");
 
         return {
           session: {

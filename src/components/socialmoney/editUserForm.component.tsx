@@ -17,7 +17,7 @@ import {
 } from "@tremor/react";
 
 import { useState, useEffect } from "react";
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 import { UserIcon, LockClosedIcon, PlusIcon } from "@heroicons/react/24/outline"
 import { FetchWithToken } from "@/lib/fetch";
 

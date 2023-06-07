@@ -7,7 +7,7 @@ import { ChangeEvent, useState } from "react";
 import { UserIcon, LockClosedIcon, ArrowRightIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
 import { TextInput, Button } from "@tremor/react";
-import { toast } from "react-toastify";
+import toast from 'react-hot-toast';
 
 import Cookies from "js-cookie";
 

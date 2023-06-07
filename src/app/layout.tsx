@@ -3,9 +3,7 @@
 import "./globals.css";
 import { NextAuthProvider } from "./providers";
 
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
+import { Toaster } from 'react-hot-toast';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -26,9 +24,7 @@ export default function RootLayout({
           {children}
         </NextAuthProvider>
         
-        <ToastContainer
-          position="bottom-center"
-        />
+        <Toaster/>
       </body>
     </html>
   );
