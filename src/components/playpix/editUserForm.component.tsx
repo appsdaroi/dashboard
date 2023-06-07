@@ -29,7 +29,9 @@ import moment from "moment";
 
 interface ModalStateProps {
     state: [
-        open: boolean,
+        open: {
+            [key: string]: any
+        },
         setOpen: (boolean: boolean) => void
     ]
 }

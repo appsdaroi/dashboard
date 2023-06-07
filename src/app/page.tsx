@@ -33,9 +33,10 @@ export default async function Home() {
         </Flex>
 
         <div className="grid grid-cols-6 grid-rows-1 p-4 mx-auto gap-7">
-          <CardModule title="Geren. usuários" image="./images/cards/users.jpg" />
-          <CardModule title="Playpix" image="./images/cards/playpix.jpg" />
-          <CardModule title="Itaú" image="./images/cards/itau.jpg" />
+          <CardModule link="/users" title="Geren. usuários" image="./images/cards/users.jpg" />
+          <CardModule link="/playpix" title="Playpix" image="./images/cards/playpix.jpg" />
+          <CardModule  link="/socialmoney" title="Socialmoney" image="./images/cards/playpix.jpg" />
+          {/* <CardModule title="Itaú" image="./images/cards/itau.jpg" /> */}
         </div>
 
       </section>

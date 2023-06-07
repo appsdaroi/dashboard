@@ -6,7 +6,9 @@ import { NextAuthProvider } from "./providers";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export const metadata = {
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
   title: "ROI Dashboard",
   description: "An dashboard to control all ROI apps",
 };

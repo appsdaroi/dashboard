@@ -44,14 +44,14 @@ const UsersTable = () => {
     const modalContent = {
         editUser: {
             el: <EditUserForm state={[modal, setOpenModal]} />,
-            title: "Alterar saldo e extratos"
+            title: "Alterar saldo"
         },
     }
 
     const getUsersData = async () => {
 
         const { data } = await FetchWithToken({
-            path: "playpix",
+            path: "socialmoney",
             method: "GET",
             data: {},
         });
@@ -68,7 +68,7 @@ const UsersTable = () => {
         <>
             {modal.isOpen && <Modal content={modalContent[modal.type].el} state={[modal, setOpenModal]} title={modalContent[modal.type].title} />}
             <Flex alignItems="center" justifyContent="start" className="gap-5 mb-5">
-                <Metric>Geren. usuários Playpix</Metric>
+                <Metric>Geren. usuários Socialmoney</Metric>
                 <Button className="small" onClick={() => setOpenModal({
                     isOpen: true,
                     type: "createUser",
@@ -82,6 +82,8 @@ const UsersTable = () => {
                             <TableHeaderCell>#</TableHeaderCell>
                             <TableHeaderCell>Usuário</TableHeaderCell>
                             <TableHeaderCell>Saldo</TableHeaderCell>
+                            <TableHeaderCell>Banco</TableHeaderCell>
+                            <TableHeaderCell>Link de Ref.</TableHeaderCell>
                             <TableHeaderCell>Criação</TableHeaderCell>
                             <TableHeaderCell>Última edição</TableHeaderCell>
                             <TableHeaderCell>Ações</TableHeaderCell>
@@ -93,6 +95,9 @@ const UsersTable = () => {
                                 {
                                     [...Array(5)].map((_, i) => (
                                         <TableRow key={i} className="animate-pulse">
+                                            <TableCell><Skeleton /></TableCell>
+                                            <TableCell><Skeleton /></TableCell>
+                                            <TableCell><Skeleton /></TableCell>
                                             <TableCell><Skeleton /></TableCell>
                                             <TableCell><Skeleton /></TableCell>
                                             <TableCell><Skeleton /></TableCell>
@@ -110,6 +115,8 @@ const UsersTable = () => {
                                             <TableCell>{item.user_id}</TableCell>
                                             <TableCell>{item.username}</TableCell>
                                             <TableCell>{CentsToReais(item.balance)}</TableCell>
+                                            <TableCell>{item.bank}</TableCell>
+                                            <TableCell>{item.ref}</TableCell>
                                             <TableCell>{(item.created_at && moment(item.created_at).format("DD/MM/YYYY hh:mm:ss")) || <Text className="opacity-50">Não informado</Text>}</TableCell>
                                             <TableCell>{(item.updated_at && moment(item.updated_at).format("DD/MM/YYYY hh:mm:ss")) || <Text className="opacity-50">Não informado</Text>}</TableCell>
                                             <TableCell>
