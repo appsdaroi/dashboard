@@ -6,7 +6,7 @@ import {
 import { useState } from "react";
 import toast from 'react-hot-toast';
 
-import { UserIcon, LockClosedIcon, PlusIcon } from "@heroicons/react/24/outline"
+import { UserIcon, LockClosedIcon, PencilSquareIcon } from "@heroicons/react/24/outline"
 import { FetchWithToken } from "@/lib/fetch";
 import { UserProps } from "../types/user";
 
@@ -60,7 +60,7 @@ const ChangePasswordForm = ({ state }: ModalStateProps) => {
                 className="py-2"
             />
 
-            <Button loading={fetching} loadingText="Alterando senha..." onClick={() => submitForm(modal.data)} className="w-full p-3" icon={PlusIcon}>Alterar senha do usuário</Button>
+            <Button loading={fetching} loadingText="Alterando senha..." onClick={() => submitForm(modal.data)} className="w-full p-3" icon={PencilSquareIcon}>Alterar senha do usuário</Button>
         </>
 
     )

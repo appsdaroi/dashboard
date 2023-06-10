@@ -18,7 +18,7 @@ import {
 
 import { useState, useEffect } from "react";
 import toast from 'react-hot-toast';
-import { UserIcon, LockClosedIcon, PlusIcon } from "@heroicons/react/24/outline"
+import { UserIcon, LockClosedIcon, PencilSquareIcon } from "@heroicons/react/24/outline"
 import { FetchWithToken } from "@/lib/fetch";
 
 import { CentsToReais, ReaisToCents } from "@/helpers/money"
@@ -49,6 +49,8 @@ const EditUserForm = ({ state }: ModalStateProps) => {
     }, [])
 
     const submitForm = async () => {
+        if (!Object.values(info).some(v => v)) return toast.error("Preencha todos os campos.")
+
         setFetching(true);
 
         const { data } = await FetchWithToken({
@@ -58,8 +60,11 @@ const EditUserForm = ({ state }: ModalStateProps) => {
                 balance: ReaisToCents(info.balance)
             }
         });
+        
+        if (data.status !== 200) return toast.error("Erro ao alterar saldo.")
 
         setFetching(false);
+        toast.success("Saldo alterado!")
 
         setTimeout(() => {
             setOpenModal(false);
@@ -83,7 +88,7 @@ const EditUserForm = ({ state }: ModalStateProps) => {
                 className="py-2"
             />
 
-            <Button loading={fetching} loadingText="Alterando saldo..." onClick={() => submitForm()} className="w-full p-3" icon={PlusIcon}>Alterar saldo do usuário</Button>
+            <Button loading={fetching} loadingText="Alterando saldo..." onClick={() => submitForm()} className="w-full p-3" icon={PencilSquareIcon}>Alterar saldo do usuário</Button>
         </>
 
     )

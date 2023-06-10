@@ -22,7 +22,11 @@ import { Skeleton } from "../skeleton.component";
 import { Modal } from "../modal.component";
 
 import { EditUserForm } from "./editUserForm.component"
+import { CreateUserForm } from "./createUserForm.component"
+import { DeleteUserForm } from "./deleteUserForm.component"
 import moment from "moment";
+
+import { ResponsiveButton, ResponsiveButtonProps } from "../responsiveButton.component"
 
 import { FetchWithToken } from "@/lib/fetch"
 import { CentsToReais } from "@/helpers/money"
@@ -45,6 +49,14 @@ const UsersTable = () => {
         editUser: {
             el: <EditUserForm state={[modal, setOpenModal]} />,
             title: "Alterar saldo"
+        },
+        createUser: {
+            el: <CreateUserForm state={[modal, setOpenModal]} />,
+            title: "Criar saldo"
+        },
+        deleteUser: {
+            el: <DeleteUserForm state={[modal, setOpenModal]} />,
+            title: "Excluir saldo"
         },
     }
 
@@ -69,11 +81,18 @@ const UsersTable = () => {
             {modal.isOpen && <Modal content={modalContent[modal.type].el} state={[modal, setOpenModal]} title={modalContent[modal.type].title} />}
             <Flex alignItems="center" justifyContent="start" className="gap-5 mb-5">
                 <Metric>Geren. usuários Socialmoney</Metric>
-                <Button className="small" onClick={() => setOpenModal({
-                    isOpen: true,
-                    type: "createUser",
-                    data: {}
-                })} icon={UserPlusIcon}>Adicionar usuário</Button>
+
+                <ResponsiveButton
+                    className="small"
+                    onClick={() => setOpenModal({
+                        isOpen: true,
+                        type: "createUser",
+                        data: data.response
+                    })}
+                    icon={UserPlusIcon}
+                >
+                    Adicionar usuário
+                </ResponsiveButton>
             </Flex>
             <Card className="border-0 ring-0">
                 <Table className="mt-5">

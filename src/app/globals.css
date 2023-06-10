@@ -83,3 +83,7 @@ aside a.active {
 aside a.active .tremor-Icon-root {
   @apply text-primary-500;
 }
+.tremor-SelectBox-root {
+  @apply py-2;
+  @apply rounded-[15px];
+}

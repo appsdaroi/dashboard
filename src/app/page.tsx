@@ -6,6 +6,14 @@ import { authOptions } from "@/lib/auth";
 import { CardModule } from "../components/card.component"
 import moment from "moment";
 
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "ROI Dashboard",
+  description: "An dashboard to control all ROI apps",
+};
+
+
 export default async function Home() {
   const session = await getServerSession(authOptions);
   const user = session?.session.user;
