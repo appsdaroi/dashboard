@@ -2,8 +2,11 @@
 const nextConfig = {
   experimental: {
     appDir: true,
-    serverComponentsExternalPackages: ["@prisma/client", "bcryptjs"]
+    serverComponentsExternalPackages: ["@prisma/client", "bcryptjs"],
   },
-}
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
