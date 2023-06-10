@@ -4,7 +4,6 @@ import "./globals.css";
 import { NextAuthProvider } from "./providers";
 
 import { Toaster } from 'react-hot-toast';
-import { Metadata } from 'next';
 
 export default function RootLayout({
   children

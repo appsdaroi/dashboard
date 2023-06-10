@@ -19,9 +19,6 @@ export const LoginForm = () => {
     password: "",
   });
 
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/profile";
-
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -33,13 +30,13 @@ export const LoginForm = () => {
         redirect: false,
         name: formValues.name,
         password: formValues.password,
-        callbackUrl,
+        callbackUrl: '/',
       });
 
       const session = await getSession();
       Cookies.set('user.token', session?.session.user.token)
 
-      if (!res?.error) return router.push(callbackUrl);
+      if (!res?.error) return router.push("/");
 
       setLoading(false);
       toast.error("Usuário ou senha inválidos.");
