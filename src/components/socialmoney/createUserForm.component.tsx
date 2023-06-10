@@ -45,7 +45,7 @@ const CreateUserForm = ({ state }: ModalStateProps) => {
 
             if (data.status !== 200) return toast.error("Erro ao consultar lista de usuários.")
             const removeUsersWithBalance = data.data.filter(k => !modal.data.some(p => p.user_id == k.id));
-            
+
             setUserList(removeUsersWithBalance);
         } catch (err) {
             toast.error(err)
@@ -96,7 +96,7 @@ const CreateUserForm = ({ state }: ModalStateProps) => {
             <SelectBox placeholder="Selecione o usuário...">
                 {
                     userList.map((user, i) => (
-                        <SelectBoxItem onClick={() => setInfo({
+                        <SelectBoxItem key={user.id} onClick={() => setInfo({
                             ...info,
                             user_id: user.id
                         })} value={`${user.username}`} icon={UsersIcon} />
