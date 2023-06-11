@@ -1,7 +1,7 @@
 "use client";
 
 import { getSession, signIn } from "next-auth/react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 
 import { UserIcon, LockClosedIcon, ArrowRightIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline";
@@ -13,6 +13,7 @@ import Cookies from "js-cookie";
 
 export const LoginForm = () => {
   const router = useRouter();
+
   const [loading, setLoading] = useState(false);
   const [formValues, setFormValues] = useState({
     name: "",
@@ -30,7 +31,7 @@ export const LoginForm = () => {
         redirect: false,
         name: formValues.name,
         password: formValues.password,
-        callbackUrl: `${new URLSearchParams(window.location.search).get('callbackUrl')}`
+        callbackUrl: `${window.location.origin}`,
       });
 
       const session = await getSession();
