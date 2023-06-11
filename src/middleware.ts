@@ -3,7 +3,11 @@ import { withAuth } from "next-auth/middleware";
 export default withAuth(
   {
     callbacks: {
-      authorized: ({ token }) => !!token,
+      authorized: ({ token }) => {
+        console.log(token);
+        console.log(!!token);
+        return !!token
+      },
     },
   }
 )
