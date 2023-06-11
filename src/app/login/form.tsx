@@ -30,7 +30,7 @@ export const LoginForm = () => {
         redirect: false,
         name: formValues.name,
         password: formValues.password,
-        callbackUrl: '/',
+        callbackUrl: `${new URLSearchParams(window.location.search).get('callbackUrl')}`
       });
 
       const session = await getSession();
