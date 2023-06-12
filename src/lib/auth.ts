@@ -47,12 +47,6 @@ export const authOptions: NextAuthOptions = {
     },
     session: ({ session, token }) => {
       return { ...session, ...token }
-    },
-    async redirect(params: { url: string }) {
-      const { baseUrl } = params
-      console.log(params)
-
-      return baseUrl;
-    },
+    }
   },
 };
