@@ -19,7 +19,14 @@ const Aside = () => {
 
     const houses = [
         "/playpix",
+    ]
+
+    const apps = [
         "/socialmoney"
+    ]
+
+    const banks = [
+        "/itau"
     ]
 
     const renderAvatar = () => {
@@ -78,9 +85,40 @@ const Aside = () => {
                                             <Icon size="sm" icon={CubeTransparentIcon} /> Playpix
                                         </Link>
                                     </li>
+                                </ul>
+                            )}
+                        </li>
+                        <li>
+                            <a
+                                onClick={() => setActiveSubmenu(activeSubmenu === "apps" ? "" : "apps")}
+                                className={`cursor-pointer group ${(activeSubmenu === "apps" || apps.includes(pathname)) && "active"}`}
+                            >
+                                <Icon size="sm" icon={HomeModernIcon} /> Apps <Icon className="ml-auto group-[.active]:rotate-90 transition-all" size="xs" icon={ChevronRightIcon} />
+                            </a>
+
+                            {(activeSubmenu === "apps" || apps.includes(pathname)) && (
+                                <ul className="flex-1 w-full scale-90">
                                     <li>
                                         <Link href="/socialmoney" className={pathname == "/socialmoney" ? "active" : ""}>
                                             <Icon size="sm" icon={CubeTransparentIcon} /> Socialmoney
+                                        </Link>
+                                    </li>
+                                </ul>
+                            )}
+                        </li>
+                        <li>
+                            <a
+                                onClick={() => setActiveSubmenu(activeSubmenu === "banks" ? "" : "banks")}
+                                className={`cursor-pointer group ${(activeSubmenu === "banks" || banks.includes(pathname)) && "active"}`}
+                            >
+                                <Icon size="sm" icon={HomeModernIcon} /> Bancos <Icon className="ml-auto group-[.active]:rotate-90 transition-all" size="xs" icon={ChevronRightIcon} />
+                            </a>
+
+                            {(activeSubmenu === "banks" || banks.includes(pathname)) && (
+                                <ul className="flex-1 w-full scale-90">
+                                    <li>
+                                        <Link href="/itau" className={pathname == "/itau" ? "active" : ""}>
+                                            <Icon size="sm" icon={CubeTransparentIcon} /> Itaú
                                         </Link>
                                     </li>
                                 </ul>
