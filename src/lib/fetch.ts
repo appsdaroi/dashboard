@@ -19,6 +19,7 @@ const FetchWithToken = async ({ path, method, data }: FetchProps) => {
         headers: {
             Authorization: `Bearer ${Cookies.get('user.token')}`,
             Accept: 'application/json',
+            'Content-Type': 'application/json'
         }
     });
 }
