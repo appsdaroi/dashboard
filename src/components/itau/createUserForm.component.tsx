@@ -63,7 +63,7 @@ const CreateUserForm = ({ state }: ModalStateProps) => {
 
         try {
             const { data } = await FetchWithToken({
-                path: "itau/",
+                path: "itau",
                 method: "POST",
                 data: {
                     user_id: info.user_id,

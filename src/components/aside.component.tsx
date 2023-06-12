@@ -5,7 +5,7 @@ import { getSession } from "next-auth/react";
 
 import React, { useState, useEffect } from "react";
 import Avatar, { genConfig } from 'react-nice-avatar'
-import { ArrowDownRightIcon, ChevronRightIcon, CubeTransparentIcon, UsersIcon, HomeModernIcon } from "@heroicons/react/24/outline";
+import { ArrowDownRightIcon, ChevronRightIcon, CubeTransparentIcon, UsersIcon, HomeModernIcon, DevicePhoneMobileIcon, BanknotesIcon } from "@heroicons/react/24/outline";
 import { signOut } from "next-auth/react";
 import { Skeleton } from "./skeleton.component";
 
@@ -70,6 +70,7 @@ const Aside = () => {
                                 <Icon size="sm" icon={UsersIcon} /> Gerenciar usuários
                             </Link>
                         </li>
+{/*                         
                         <li>
                             <a
                                 onClick={() => setActiveSubmenu(activeSubmenu === "houses" ? "" : "houses")}
@@ -87,13 +88,14 @@ const Aside = () => {
                                     </li>
                                 </ul>
                             )}
-                        </li>
+                        </li> */}
+
                         <li>
                             <a
                                 onClick={() => setActiveSubmenu(activeSubmenu === "apps" ? "" : "apps")}
                                 className={`cursor-pointer group ${(activeSubmenu === "apps" || apps.includes(pathname)) && "active"}`}
                             >
-                                <Icon size="sm" icon={HomeModernIcon} /> Apps <Icon className="ml-auto group-[.active]:rotate-90 transition-all" size="xs" icon={ChevronRightIcon} />
+                                <Icon size="sm" icon={DevicePhoneMobileIcon} /> Apps <Icon className="ml-auto group-[.active]:rotate-90 transition-all" size="xs" icon={ChevronRightIcon} />
                             </a>
 
                             {(activeSubmenu === "apps" || apps.includes(pathname)) && (
@@ -106,12 +108,13 @@ const Aside = () => {
                                 </ul>
                             )}
                         </li>
+
                         <li>
                             <a
                                 onClick={() => setActiveSubmenu(activeSubmenu === "banks" ? "" : "banks")}
                                 className={`cursor-pointer group ${(activeSubmenu === "banks" || banks.includes(pathname)) && "active"}`}
                             >
-                                <Icon size="sm" icon={HomeModernIcon} /> Bancos <Icon className="ml-auto group-[.active]:rotate-90 transition-all" size="xs" icon={ChevronRightIcon} />
+                                <Icon size="sm" icon={BanknotesIcon} /> Bancos <Icon className="ml-auto group-[.active]:rotate-90 transition-all" size="xs" icon={ChevronRightIcon} />
                             </a>
 
                             {(activeSubmenu === "banks" || banks.includes(pathname)) && (

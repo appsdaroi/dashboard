@@ -18,12 +18,12 @@ import {
 
 import { useState, useEffect } from "react";
 import toast from 'react-hot-toast';
-import { UserIcon, LockClosedIcon, PencilSquareIcon } from "@heroicons/react/24/outline"
+import { UserIcon, LockClosedIcon, PlusIcon } from "@heroicons/react/24/outline"
 import { FetchWithToken } from "@/lib/fetch";
 
 import { CentsToReais, ReaisToCents } from "@/helpers/money"
-import { formatToBRL } from 'brazilian-values';
-
+import { UserProps } from "../types/user";
+import { Skeleton } from "../skeleton.component";
 import moment from "moment";
 
 
@@ -38,18 +38,52 @@ interface ModalStateProps {
 
 const EditUserForm = ({ state }: ModalStateProps) => {
     const [info, setInfo] = useState({
-        balance: ""
+        balance: "",
+        extracts: []
     })
 
     const [modal, setOpenModal] = state;
     const [fetching, setFetching] = useState(false);
+    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        console.log(modal.data)
-    }, [])
+    const getThisUserInfo = async () => {
+        try {
+            const { data } = await FetchWithToken({
+                path: `itau/${modal.data.user_id}/extracts`,
+                method: "GET",
+            });
+
+            const extracts = data.response;
+
+            setInfo({
+                balance: CentsToReais(modal.data.balance),
+                extracts
+            })
+
+            setLoading(false)
+        } catch (err) {
+            toast.error(err);
+        }
+    }
+
+    const deleteThisRow = async (id: string) => {
+        try {
+            const { data } = await FetchWithToken({
+                path: `itau/${modal.data.user_id}/extracts/${id}`,
+                method: "DELETE",
+            });
+
+            if (data.status === 200) toast.success("Extrato excluído")
+
+            getThisUserInfo();
+        } catch (err) {
+            toast.error(err);
+        }
+    }
 
     const submitForm = async () => {
-        if (!Object.values(info).some(v => v)) return toast.error("Preencha todos os campos.")
+        console.log(info)
+        if (info.balance == null && info.balance?.length === 0) return toast.error("Preencha um dos campos.")
 
         setFetching(true);
 
@@ -60,7 +94,7 @@ const EditUserForm = ({ state }: ModalStateProps) => {
                 balance: ReaisToCents(info.balance)
             }
         });
-        
+
         if (data.status !== 200) return toast.error("Erro ao alterar saldo.")
 
         setFetching(false);
@@ -71,24 +105,71 @@ const EditUserForm = ({ state }: ModalStateProps) => {
         }, 500);
     }
 
-    const formatInputToCurrency = (value: string) => {
-        const currency = value.toString().replace(/\D/g, '');
-        return formatToBRL(currency);
-    }
+    useEffect(() => {
+        getThisUserInfo();
+    }, [])
 
     return (
         <>
             <TextInput
-                onInput={() => formatInputToCurrency(evt.target.value)}
                 onChange={(evt) => setInfo({ ...info, balance: evt.target.value })}
                 value={info.balance}
                 type="text"
                 icon={LockClosedIcon}
-                placeholder="Novo saldo"
+                placeholder="Nova senha"
                 className="py-2"
             />
 
-            <Button loading={fetching} loadingText="Alterando saldo..." onClick={() => submitForm()} className="w-full p-3" icon={PencilSquareIcon}>Alterar saldo do usuário</Button>
+            <Flex className="gap-2" alignItems="center" justifyContent="start">
+                <Title className="block text-start">Extratos</Title>
+                <Icon icon={PlusIcon} className="cursor-pointer" size="xs" color="violet" variant="light" tooltip="Adicionar extrato"></Icon>
+            </Flex>
+
+            <Flex flexDirection="col" className="p-2 border border-gray-300 rounded-lg">
+
+                <Table className="w-full">
+                    <TableHead>
+                        <TableRow>
+                            <TableHeaderCell>Tipo</TableHeaderCell>
+                            <TableHeaderCell>Título</TableHeaderCell>
+                            <TableHeaderCell>Valor</TableHeaderCell>
+                            <TableHeaderCell>Data</TableHeaderCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {loading ? (
+                            <>
+                                {
+                                    [...Array(5)].map((_, i) => (
+                                        <TableRow key={i} className="animate-pulse">
+                                            <TableCell><Skeleton /></TableCell>
+                                            <TableCell><Skeleton /></TableCell>
+                                            <TableCell><Skeleton /></TableCell>
+                                        </TableRow>
+                                    ))
+                                }
+                            </>
+                        ) : (
+                            <>
+                                {
+                                    info.extracts.map((item) => (
+                                        <TableRow onClick={() => deleteThisRow(item.id)} key={item.id} className="relative cursor-pointer after:transition-all after:absolute after:bg-red-500/10 after:w-full after:h-full after:right-0 after:top-0 after:opacity-0 after:rounded-lg hover:after:opacity-100">
+                                            <TableCell>{item.type}</TableCell>
+                                            <TableCell>{item.title}</TableCell>
+                                            <TableCell>{CentsToReais(item.value)}</TableCell>
+                                            <TableCell>{moment(item.date).format("DD/MM/YYYY hh:mm:ss")}</TableCell>
+                                        </TableRow>
+                                    ))
+                                }
+                            </>
+                        )}
+
+                    </TableBody>
+                </Table>
+            </Flex>
+
+
+            <Button loading={fetching} loadingText="Alterando dados..." onClick={() => submitForm()} className="w-full p-3" icon={PlusIcon}>Alterar dados do usuário</Button>
         </>
 
     )

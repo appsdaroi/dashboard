@@ -36,7 +36,7 @@ const DeleteUserForm = ({ state }: Props) => {
 
         try {
             const res = await FetchWithToken({
-                path: `socialmoney/${id}`,
+                path: `itau/${id}`,
                 method: "DELETE",
             });
 
