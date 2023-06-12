@@ -105,6 +105,11 @@ const Aside = () => {
                                             <Icon size="sm" icon={CubeTransparentIcon} /> Socialmoney
                                         </Link>
                                     </li>
+                                    <li>
+                                        <Link href="/avaliadorDeMarcas" className={pathname == "/avaliadorDeMarcas" ? "active" : ""}>
+                                            <Icon size="sm" icon={CubeTransparentIcon} /> Avaliador de Marcas
+                                        </Link>
+                                    </li>
                                 </ul>
                             )}
                         </li>
