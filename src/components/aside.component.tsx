@@ -106,7 +106,7 @@ const Aside = () => {
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href="/avaliadorDeMarcas" className={pathname == "/avaliadorDeMarcas" ? "active" : ""}>
+                                        <Link href="/avaliador-de-marcas" className={pathname == "/avaliador-de-marcas" ? "active" : ""}>
                                             <Icon size="sm" icon={CubeTransparentIcon} /> Avaliador de Marcas
                                         </Link>
                                     </li>

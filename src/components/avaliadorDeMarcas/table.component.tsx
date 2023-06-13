@@ -63,9 +63,8 @@ const UsersTable = () => {
     const getUsersData = async () => {
 
         const { data } = await FetchWithToken({
-            path: "socialmoney",
+            path: "avaliador",
             method: "GET",
-            data: {},
         });
 
         setData(data);
