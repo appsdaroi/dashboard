@@ -45,7 +45,7 @@ export default async function Home() {
           {/* <CardModule link="/playpix" title="Playpix" image="./images/cards/playpix.jpg" /> */}
           <CardModule link="/socialmoney" title="Socialmoney" image="./images/cards/socialmoney.jpg" />
           <CardModule link="/itau" title="Itaú" image="./images/cards/itau.jpg" />
-          <CardModule link="/avaliador-de-marcas" title="Money Looks" image="./images/cards/money-looks.jpg" />
+          <CardModule link="/avaliador-de-marcas" title="Avaliador de marcas" image="./images/cards/money-looks.jpg" />
         </div>
 
       </section>
