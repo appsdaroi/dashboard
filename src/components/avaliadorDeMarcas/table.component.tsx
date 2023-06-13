@@ -15,7 +15,7 @@ import {
     Icon,
 } from "@tremor/react";
 
-import { UserPlusIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { UserPlusIcon, PencilSquareIcon, TrashIcon, ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
 
 import { Skeleton } from "../skeleton.component";
@@ -26,7 +26,7 @@ import { CreateUserForm } from "./createUserForm.component"
 import { DeleteUserForm } from "./deleteUserForm.component"
 import moment from "moment";
 
-import { ResponsiveButton, ResponsiveButtonProps } from "../responsiveButton.component"
+import { ResponsiveButton } from "../responsiveButton.component"
 
 import { FetchWithToken } from "@/lib/fetch"
 import { CentsToReais } from "@/helpers/money"
@@ -78,11 +78,11 @@ const UsersTable = () => {
     return (
         <>
             {modal.isOpen && <Modal content={modalContent[modal.type].el} state={[modal, setOpenModal]} title={modalContent[modal.type].title} />}
-            <Flex alignItems="center" justifyContent="start" className="gap-5 mb-5">
+            <Flex alignItems="center" justifyContent="start" className="gap-3 mb-5">
                 <Metric>Geren. usuários Avaliador de Marcas</Metric>
 
                 <ResponsiveButton
-                    className="small"
+                    className="ml-2 small"
                     onClick={() => setOpenModal({
                         isOpen: true,
                         type: "createUser",
@@ -92,6 +92,8 @@ const UsersTable = () => {
                 >
                     Adicionar usuário
                 </ResponsiveButton>
+
+                <Icon icon={ArrowUpRightIcon} variant="light" className="p-2 cursor-pointer" color="violet" tooltip="Abrir app" onClick={() => window.open("https://money-looks.vercel.app",'_blank')}/>
             </Flex>
             <Card className="border-0 ring-0">
                 <Table className="mt-5">

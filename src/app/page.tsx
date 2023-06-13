@@ -40,11 +40,12 @@ export default async function Home() {
           <Subtitle>O que você deseja fazer hoje?</Subtitle>
         </Flex>
 
-        <div className="grid grid-cols-6 grid-rows-1 p-4 mx-auto gap-7">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(0px,300px))] grid-rows-1 p-4 mx-auto gap-7">
           <CardModule link="/users" title="Geren. usuários" image="./images/cards/users.jpg" />
           {/* <CardModule link="/playpix" title="Playpix" image="./images/cards/playpix.jpg" /> */}
           <CardModule link="/socialmoney" title="Socialmoney" image="./images/cards/socialmoney.jpg" />
           <CardModule link="/itau" title="Itaú" image="./images/cards/itau.jpg" />
+          <CardModule link="/avaliador-de-marcas" title="Money Looks" image="./images/cards/money-looks.jpg" />
         </div>
 
       </section>

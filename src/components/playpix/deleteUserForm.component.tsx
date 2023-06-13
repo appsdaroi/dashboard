@@ -37,7 +37,7 @@ const DeleteUserForm = ({ state }: Props) => {
         try {
 
             const res = await FetchWithToken({
-                path: `users/${id}`,
+                path: `playpix/${id}`,
                 method: "DELETE",
                 data: {},
             });
