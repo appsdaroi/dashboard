@@ -49,7 +49,7 @@ const EditUserForm = ({ state }: ModalStateProps) => {
     const [loading, setLoading] = useState(true);
 
     const [newExtract, setNewExtract] = useState({
-        isOpen: true,
+        isOpen: false,
         info: {
             type: "",
             title: "",
