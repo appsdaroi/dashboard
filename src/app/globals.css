@@ -87,3 +87,13 @@ aside a.active .tremor-Icon-root {
   @apply py-2;
   @apply rounded-[15px];
 }
+
+input[type="datetime-local"] {
+  @apply w-full;
+  @apply p-4;
+  @apply text-sm;
+  @apply border;
+  @apply border-gray-300;
+  @apply rounded-[15px];
+  @apply text-gray-500;
+}

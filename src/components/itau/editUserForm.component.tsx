@@ -14,6 +14,8 @@ import {
     Button,
     Icon,
     Title,
+    SelectBox,
+    SelectBoxItem,
 } from "@tremor/react";
 
 import { useState, useEffect } from "react";
@@ -46,6 +48,16 @@ const EditUserForm = ({ state }: ModalStateProps) => {
     const [fetching, setFetching] = useState(false);
     const [loading, setLoading] = useState(true);
 
+    const [newExtract, setNewExtract] = useState({
+        isOpen: true,
+        info: {
+            type: "",
+            title: "",
+            value: "",
+            date: ""
+        }
+    });
+
     const getThisUserInfo = async () => {
         try {
             const { data } = await FetchWithToken({
@@ -74,6 +86,27 @@ const EditUserForm = ({ state }: ModalStateProps) => {
             });
 
             if (data.status === 200) toast.success("Extrato excluído")
+
+            getThisUserInfo();
+        } catch (err) {
+            toast.error(err);
+        }
+    }
+
+    const insertExtract = async (id: string) => {
+        try {
+            const { data } = await FetchWithToken({
+                path: `itau/${modal.data.user_id}/extracts`,
+                method: "POST",
+                data: {
+                    value: ReaisToCents(newExtract.info.value),
+                    date: moment(newExtract.info.date).format("YYYY-MM-DD HH:mm:ss"),
+                    type: newExtract.info.type,
+                    title: newExtract.info.title
+                }
+            });
+
+            if (data.status === 200) toast.success("Extrato criado")
 
             getThisUserInfo();
         } catch (err) {
@@ -122,18 +155,80 @@ const EditUserForm = ({ state }: ModalStateProps) => {
 
             <Flex className="gap-2" alignItems="center" justifyContent="start">
                 <Title className="block text-start">Extratos</Title>
-                <Icon icon={PlusIcon} className="cursor-pointer" size="xs" color="violet" variant="light" tooltip="Adicionar extrato"></Icon>
+                <Icon onClick={() => setNewExtract({
+                    ...newExtract,
+                    isOpen: !newExtract.isOpen
+                })} icon={PlusIcon} className="cursor-pointer" size="xs" color="violet" variant="light" tooltip="Adicionar extrato"></Icon>
             </Flex>
+
+            {newExtract.isOpen && (
+                <Flex flexDirection="col" className="gap-2">
+                    <SelectBox placeholder="Selecione o tipo do extrato...">
+                        <SelectBoxItem onClick={() => setNewExtract({
+                            ...newExtract,
+                            info: {
+                                ...newExtract.info,
+                                type: "deposit"
+                            }
+                        })} value="Entrada" />
+
+                        <SelectBoxItem onClick={() => setNewExtract({
+                            ...newExtract,
+                            info: {
+                                ...newExtract.info,
+                                type: "withdraw"
+                            }
+                        })} value="Saída" />
+                    </SelectBox>
+
+                    <TextInput
+                        onChange={(evt) => setNewExtract({
+                            ...newExtract,
+                            info: {
+                                ...newExtract.info,
+                                title: evt.target.value
+                            }
+                        })}
+                        type="text"
+                        icon={LockClosedIcon}
+                        placeholder="Título do extrato (socialmoney, money looks, etc...)"
+                        className="py-2"
+                    />
+
+                    <TextInput
+                        onChange={(evt) => setNewExtract({
+                            ...newExtract,
+                            info: {
+                                ...newExtract.info,
+                                value: evt.target.value
+                            }
+                        })}
+                        type="text"
+                        icon={LockClosedIcon}
+                        placeholder="Valor do extrato"
+                        className="py-2"
+                    />
+
+                    <input onChange={(evt) => setNewExtract({
+                        ...newExtract,
+                        info: {
+                            ...newExtract.info,
+                            date: evt.target.value
+                        }
+                    })} type="datetime-local" className="w-full p-4 text-sm border rounded-xl" />
+                    <Button onClick={() => insertExtract()} className="w-full p-3" icon={PlusIcon}>Criar novo extrato</Button>
+                </Flex>
+            )}
 
             <Flex flexDirection="col" className="p-2 border border-gray-300 rounded-lg">
 
-                <Table className="w-full">
+                <Table className="w-full max-h-[400px]">
                     <TableHead>
                         <TableRow>
-                            <TableHeaderCell>Tipo</TableHeaderCell>
-                            <TableHeaderCell>Título</TableHeaderCell>
-                            <TableHeaderCell>Valor</TableHeaderCell>
-                            <TableHeaderCell>Data</TableHeaderCell>
+                            <TableHeaderCell className="bg-white z-[999]">Tipo</TableHeaderCell>
+                            <TableHeaderCell className="bg-white z-[999]">Título</TableHeaderCell>
+                            <TableHeaderCell className="bg-white z-[999]">Valor</TableHeaderCell>
+                            <TableHeaderCell className="bg-white z-[999]">Data</TableHeaderCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

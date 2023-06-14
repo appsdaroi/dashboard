@@ -25,7 +25,7 @@ const Modal = ({ content, title, state }: Props) => {
     return (
         <>
             {open && (
-                <div className="fixed top-0 bottom-0 left-0 right-0 bg-black/20 flex items-center justify-center w-screen h-screen z-[9999]">
+                <div className="overflow-y-scroll fixed top-0 bottom-0 left-0 right-0 bg-black/20 flex items-center justify-center w-screen h-screen z-[9999]">
                     <Card className="max-w-xl">
                         <Flex className="pb-4">
                             <Title>{title}</Title>
