@@ -23,7 +23,7 @@ import toast from 'react-hot-toast';
 import { UserIcon, LockClosedIcon, PlusIcon } from "@heroicons/react/24/outline"
 import { FetchWithToken } from "@/lib/fetch";
 
-import { CentsToReais, ReaisToCents } from "@/helpers/money"
+import { CentsToReais, ReaisToCents, FormatCurrency } from "@/helpers/money"
 import { UserProps } from "../types/user";
 import { Skeleton } from "../skeleton.component";
 import moment from "moment";
@@ -121,7 +121,7 @@ const EditUserForm = ({ state }: ModalStateProps) => {
         setFetching(true);
 
         const { data } = await FetchWithToken({
-            path: `socialmoney/${modal.data.id}`,
+            path: `itau/${modal.data.user_id}`,
             method: "PUT",
             data: {
                 balance: ReaisToCents(info.balance)
