@@ -121,7 +121,7 @@ const EditUserForm = ({ state }: ModalStateProps) => {
         setFetching(true);
 
         const { data } = await FetchWithToken({
-            path: `itau/${modal.data.id}`,
+            path: `itau/${modal.data.user_id}`,
             method: "PUT",
             data: {
                 balance: ReaisToCents(info.balance)
