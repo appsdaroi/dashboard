@@ -47,7 +47,7 @@ const Aside = () => {
     }, [])
 
     return (
-        <div className="fixed top-0 left-0 h-screen p-4 w-80 z-[9999]">
+        <div className="fixed top-0 left-0 h-screen p-4 w-80">
             <aside className="w-full h-full rounded-[20px] shadow-lg shadow-primary-200 bg-primary-500">
                 <Flex justifyContent="center" alignItems="center" flexDirection="col" className="h-full gap-3 p-6">
                     <Flex justifyContent="center" className="py-4 font-semibold">
@@ -70,7 +70,7 @@ const Aside = () => {
                                 <Icon size="sm" icon={UsersIcon} /> Gerenciar usuários
                             </Link>
                         </li>
-{/*                         
+                        
                         <li>
                             <a
                                 onClick={() => setActiveSubmenu(activeSubmenu === "houses" ? "" : "houses")}
@@ -88,7 +88,7 @@ const Aside = () => {
                                     </li>
                                 </ul>
                             )}
-                        </li> */}
+                        </li>
 
                         <li>
                             <a

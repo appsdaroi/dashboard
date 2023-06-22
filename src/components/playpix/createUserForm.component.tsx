@@ -1,85 +1,119 @@
 import {
-    Card,
-    Table,
-    TableHead,
-    TableRow,
-    TableHeaderCell,
-    TableBody,
-    TableCell,
+    TextInput,
     Text,
-    Flex,
-    Title,
     Button,
-    TextInput
+    SelectBox,
+    SelectBoxItem
 } from "@tremor/react";
 
-import { useState } from "react";
-import toast from 'react-hot-toast';
-import { UserIcon, LockClosedIcon, PlusIcon } from "@heroicons/react/24/outline"
+import { useState, useEffect } from "react";
 import { FetchWithToken } from "@/lib/fetch";
-import { UserProps } from "../types/user";
+
+import toast from 'react-hot-toast';
+import { UsersIcon, LockClosedIcon, PlusIcon, CalculatorIcon } from "@heroicons/react/24/outline"
+
+import { ReaisToCents } from "@/helpers/money"
+import { formatToBRL } from 'brazilian-values';
 
 interface ModalStateProps {
     state: [
-        _: boolean,
+        open: {
+            [key: string]: any
+        },
         setOpen: (boolean: boolean) => void
     ]
 }
 
 const CreateUserForm = ({ state }: ModalStateProps) => {
+    const [modal, setOpenModal] = state;
+
     const [info, setInfo] = useState({
-        username: "",
-        password: ""
+        balance: "",
+        user_id: 0,
+        bank: ""
     })
 
-    const [_, setOpen] = state;
-    const [fetching, setFetching] = useState(false)
+    const [userList, setUserList] = useState([]);
+    const [fetching, setFetching] = useState(false);
 
-    const submitForm = async ({ username, password }: UserProps, setFetching: (state: boolean) => void) => {
+    const getUsersData = async () => {
+        try {
+            const { data } = await FetchWithToken({
+                path: "users",
+                method: "GET",
+            });
+
+            if (data.status !== 200) return toast.error("Erro ao consultar lista de usuários.")
+            const removeUsersWithBalance = data.data.filter(k => !modal.data.some(p => p.user_id == k.id));
+
+            setUserList(removeUsersWithBalance);
+        } catch (err) {
+            toast.error(err)
+        }
+    }
+
+    useEffect(() => {
+        getUsersData()
+    }, [])
+
+    const submitForm = async () => {
+        if (!Object.values(info).some(v => v)) return toast.error("Preencha todos os campos.")
+
         setFetching(true);
 
-        if (!username || !password) {
-            setFetching(false);
-            return toast.error("Preencha os dados corretamente!")
-        }
-
         try {
-            const res = await FetchWithToken({
-                path: "users",
+            const { data } = await FetchWithToken({
+                path: "playpix",
                 method: "POST",
-                data: { username, password }, 
+                data: {
+                    user_id: info.user_id,
+                    balance: ReaisToCents(info.balance)
+                }
             });
-    
-            if (res.status !== 200) return toast.error("Erro ao criar usuário.")
-            toast.success(`Usuário ${username} foi criado com sucesso!`)
-            setOpen(false)
-        } catch {
-            setFetching(false);
-            return toast.error("Erro ao alterar senha do usuário.")
-        }
 
+            if (data.status !== 200) return toast.error("Erro ao criar saldo.")
+
+            setFetching(false);
+            toast.success("Saldo criado!")
+
+            setTimeout(() => {
+                setOpenModal(false);
+            }, 500);
+        } catch (err) {
+
+        }
+    }
+
+    const formatInputToCurrency = (value: string) => {
+        const currency = value.toString().replace(/\D/g, '');
+        return formatToBRL(currency);
     }
 
     return (
         <>
-            <TextInput
-                onChange={(evt) => setInfo({ ...info, username: evt.target.value })}
-                value={info.username}
-                icon={UserIcon}
-                placeholder="Usuário"
-                className="py-2"
-            />
+            <Text>Selecione o usuário na qual o saldo vai estar vinculado.</Text>
+            <SelectBox placeholder="Selecione o usuário...">
+                {
+                    userList.map((user, i) => (
+                        <SelectBoxItem key={user.id} onClick={() => setInfo({
+                            ...info,
+                            user_id: user.id
+                        })} value={`${user.username}`} icon={UsersIcon} />
+                    ))
+                }
+            </SelectBox>
 
             <TextInput
-                onChange={(evt) => setInfo({ ...info, password: evt.target.value })}
-                value={info.password}
-                type="password"
+                onInput={(evt) => formatInputToCurrency(evt.target.value)}
+                onChange={(evt) => setInfo({ ...info, balance: evt.target.value })}
+                value={info.balance}
+                type="text"
                 icon={LockClosedIcon}
-                placeholder="Senha"
-                className="py-2"
+                placeholder="Saldo do usuário"
+                className="py-2 mt-4"
             />
 
-            <Button loading={fetching} loadingText="Criando usuário..." onClick={() => submitForm(info, setFetching)} className="w-full p-3" icon={PlusIcon}>Criar novo usuário</Button>
+            <Button loading={fetching} loadingText="Criando saldo..." onClick={() => submitForm()} className="w-full p-3" icon={PlusIcon}>Criar saldo</Button>
         </>
 
     )

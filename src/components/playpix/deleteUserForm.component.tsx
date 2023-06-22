@@ -26,10 +26,10 @@ const DeleteUserForm = ({ state }: Props) => {
     const [modal, setOpenModal] = state;
     const [fetching, setFetching] = useState(false)
 
-    const submitForm = async ({ id, username }: UserProps) => {
+    const submitForm = async ({ user_id, username }: UserProps) => {
         setFetching(true);
 
-        if (!id) {
+        if (!user_id) {
             setFetching(false);
             return toast.error("ID do usuário não encontrado.")
         }
@@ -37,7 +37,7 @@ const DeleteUserForm = ({ state }: Props) => {
         try {
 
             const res = await FetchWithToken({
-                path: `playpix/${id}`,
+                path: `playpix/${user_id}`,
                 method: "DELETE",
                 data: {},
             });
@@ -54,7 +54,7 @@ const DeleteUserForm = ({ state }: Props) => {
     return (
         <>
             <Flex className="gap-1 mb-2" flexDirection="col">
-                <Text className="text-lg">Deseja excluir o usuário <span style={{ fontWeight: 700 }}>{modal.data.username}</span>?</Text>
+                <Text className="text-lg">Deseja excluir o saldo do usuário <span style={{ fontWeight: 700 }}>{modal.data.username}</span>?</Text>
                 <Flex justifyContent="center">
                     <Icon size="xs" color="red" icon={ExclamationTriangleIcon} />
                     <Text>Essa ação é irreversível</Text>
@@ -62,9 +62,8 @@ const DeleteUserForm = ({ state }: Props) => {
             </Flex>
 
 
-            <Button color="red" loading={fetching} loadingText="Excluindo usuário..." onClick={() => submitForm(modal.data)} className="w-full p-3" icon={TrashIcon}>Sim, quero excluir o usuário!</Button>
+            <Button color="red" loading={fetching} loadingText="Excluindo saldo..." onClick={() => submitForm(modal.data)} className="w-full p-3" icon={TrashIcon}>Sim, quero excluir o saldo!</Button>
         </>
-
     )
 
 }

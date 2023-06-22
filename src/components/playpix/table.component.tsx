@@ -26,6 +26,8 @@ import { CreateUserForm } from "./createUserForm.component"
 import { DeleteUserForm } from "./deleteUserForm.component"
 import moment from "moment";
 
+import { ResponsiveButton } from "../responsiveButton.component"
+
 import { FetchWithToken } from "@/lib/fetch"
 import { CentsToReais } from "@/helpers/money"
 
@@ -46,20 +48,19 @@ const UsersTable = () => {
     const modalContent = {
         editUser: {
             el: <EditUserForm state={[modal, setOpenModal]} />,
-            title: "Alterar saldo e extratos"
+            title: "Alterar saldo"
         },
         createUser: {
             el: <CreateUserForm state={[modal, setOpenModal]} />,
-            title: "Criar novo saldo e extrato"
+            title: "Criar novo saldo"
         },
         deleteUser: {
             el: <DeleteUserForm state={[modal, setOpenModal]} />,
-            title: "Excluir saldo e extratos"
+            title: "Excluir saldo"
         },
     }
 
     const getUsersData = async () => {
-
         const { data } = await FetchWithToken({
             path: "playpix",
             method: "GET",
@@ -76,14 +77,20 @@ const UsersTable = () => {
 
     return (
         <>
-            {modal.isOpen && <Modal content={modalContent[modal.type].el} state={[modal, setOpenModal]} title={modalContent[modal.type].title} />}
+            <Modal content={modalContent[modal.type]?.el} state={[modal, setOpenModal]} title={modalContent[modal.type]?.title} />
             <Flex alignItems="center" justifyContent="start" className="gap-5 mb-5">
                 <Metric>Geren. usuários Playpix</Metric>
-                <Button className="small" onClick={() => setOpenModal({
-                    isOpen: true,
-                    type: "createUser",
-                    data: {}
-                })} icon={UserPlusIcon}>Adicionar usuário</Button>
+                <ResponsiveButton
+                    className="ml-2 small"
+                    onClick={() => setOpenModal({
+                        isOpen: true,
+                        type: "createUser",
+                        data: data.response
+                    })}
+                    icon={UserPlusIcon}
+                >
+                    Adicionar usuário
+                </ResponsiveButton>
             </Flex>
             <Card className="border-0 ring-0">
                 <Table className="mt-5">

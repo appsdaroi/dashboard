@@ -61,7 +61,7 @@ const DeleteUserForm = ({ state }: Props) => {
             </Flex>
 
 
-            <Button color="red" loading={fetching} loadingText="Excluindo usuário..." onClick={() => submitForm(modal.data)} className="w-full p-3" icon={TrashIcon}>Sim, quero excluir o usuário!</Button>
+            <Button color="red" loading={fetching} loadingText="Excluindo saldo..." onClick={() => submitForm(modal.data)} className="w-full p-3" icon={TrashIcon}>Sim, quero excluir o saldo!</Button>
         </>
 
     )

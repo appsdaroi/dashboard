@@ -78,7 +78,7 @@ const UsersTable = () => {
 
     return (
         <>
-            {modal.isOpen && <Modal content={modalContent[modal.type].el} state={[modal, setOpenModal]} title={modalContent[modal.type].title} />}
+            <Modal content={modalContent[modal.type]?.el} state={[modal, setOpenModal]} title={modalContent[modal.type]?.title} />
             <Flex alignItems="center" justifyContent="start" className="gap-3 mb-5">
                 <Metric>Geren. usuários Socialmoney</Metric>
 

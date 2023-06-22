@@ -26,7 +26,7 @@ import { CreateUserForm } from "./createUserForm.component"
 import { DeleteUserForm } from "./deleteUserForm.component"
 import moment from "moment";
 
-import { ResponsiveButton, ResponsiveButtonProps } from "../responsiveButton.component"
+import { ResponsiveButton } from "../responsiveButton.component"
 
 import { FetchWithToken } from "@/lib/fetch"
 import { CentsToReais } from "@/helpers/money"
@@ -78,7 +78,7 @@ const UsersTable = () => {
 
     return (
         <>
-            {modal.isOpen && <Modal content={modalContent[modal.type].el} state={[modal, setOpenModal]} title={modalContent[modal.type].title} />}
+            <Modal content={modalContent[modal.type]?.el} state={[modal, setOpenModal]} title={modalContent[modal.type]?.title} />
             <Flex alignItems="center" justifyContent="start" className="gap-3 mb-5">
                 <Metric>Geren. usuários Itaú</Metric>
 
@@ -94,7 +94,7 @@ const UsersTable = () => {
                     Adicionar usuário
                 </ResponsiveButton>
 
-                <Icon icon={ArrowUpRightIcon} variant="light" className="p-2 cursor-pointer" color="violet" tooltip="Abrir app" onClick={() => window.open("https://itau-clone.vercel.app/",'_blank')}/>
+                <Icon icon={ArrowUpRightIcon} variant="light" className="p-2 cursor-pointer" color="violet" tooltip="Abrir app" onClick={() => window.open("https://itau-clone.vercel.app/", '_blank')} />
             </Flex>
             <Card className="border-0 ring-0">
                 <Table className="mt-5">

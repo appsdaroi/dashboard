@@ -1,7 +1,5 @@
 import {
-    Subtitle,
     TextInput,
-    Card,
     Table,
     TableHead,
     TableRow,
@@ -9,7 +7,6 @@ import {
     TableBody,
     TableCell,
     Text,
-    Metric,
     Flex,
     Button,
     Icon,
@@ -18,7 +15,7 @@ import {
 
 import { useState, useEffect } from "react";
 import toast from 'react-hot-toast';
-import { UserIcon, LockClosedIcon, PlusIcon } from "@heroicons/react/24/outline"
+import { LockClosedIcon, PlusIcon, CurrencyDollarIcon, XMarkIcon, TrophyIcon, ArrowPathIcon } from "@heroicons/react/24/outline"
 import { FetchWithToken } from "@/lib/fetch";
 
 import { CentsToReais, ReaisToCents } from "@/helpers/money"
@@ -46,15 +43,23 @@ const EditUserForm = ({ state }: ModalStateProps) => {
     const [fetching, setFetching] = useState(false);
     const [loading, setLoading] = useState(true);
 
+    const [newExtract, setNewExtract] = useState({
+        isOpen: false,
+        info: {
+            quotes: "",
+            value: "",
+            date: ""
+        }
+    });
+
     const getThisUserInfo = async () => {
         try {
             const { data } = await FetchWithToken({
-                path: `playpix/${modal.data.user_id}`,
+                path: `playpix/${modal.data.user_id}/extracts`,
                 method: "GET",
-                data: {},
             });
 
-            const { extracts } = data.response;
+            const extracts = data.response;
 
             setInfo({
                 balance: CentsToReais(modal.data.balance),
@@ -70,7 +75,7 @@ const EditUserForm = ({ state }: ModalStateProps) => {
     const deleteThisRow = async (id: string) => {
         try {
             const { data } = await FetchWithToken({
-                path: `playpix/${id}`,
+                path: `playpix/${modal.data.user_id}/extracts/${id}`,
                 method: "DELETE",
             });
 
@@ -82,30 +87,49 @@ const EditUserForm = ({ state }: ModalStateProps) => {
         }
     }
 
-    // const submitForm = async () => {
-    //     setFetching(true);
+    const insertExtract = async (id: string) => {
+        try {
+            const { data } = await FetchWithToken({
+                path: `playpix/${modal.data.user_id}/extracts`,
+                method: "POST",
+                data: {
+                    value: ReaisToCents(newExtract.info.value),
+                    date: moment(newExtract.info.date).format("YYYY-MM-DD HH:mm:ss"),
+                    quotes: newExtract.info.quotes
+                }
+            });
 
-    //     if (!modal.data.user_id) {
-    //         setFetching(false);
-    //         return toast.error("ID do usuário não encontrado.")
-    //     }
+            if (data.status === 200) toast.success("Extrato criado")
 
-    //     try {
+            getThisUserInfo();
+        } catch (err) {
+            toast.error(err);
+        }
+    }
 
-    //         const res = await FetchWithToken({
-    //             path: `users/${modal.data.user_id}`,
-    //             method: "PUT",
-    //             data: {},
-    //         });
+    const submitForm = async () => {
+        console.log(info)
+        if (info.balance == null && info.balance?.length === 0) return toast.error("Preencha um dos campos.")
 
-    //         if (res.status !== 200) return toast.error("Erro ao excluir usuário.")
-    //         toast.success(`Usuário ${username} foi excluído com sucesso!`)
-    //         setOpenModal(false)
-    //     } catch {
-    //         setFetching(false);
-    //         return toast.error(`Erro ao excluir usuário ${username}.`)
-    //     }
-    // }
+        setFetching(true);
+
+        const { data } = await FetchWithToken({
+            path: `playpix/${modal.data.user_id}`,
+            method: "PUT",
+            data: {
+                balance: ReaisToCents(info.balance)
+            }
+        });
+
+        if (data.status !== 200) return toast.error("Erro ao alterar saldo.")
+
+        setFetching(false);
+        toast.success("Saldo alterado!")
+
+        setTimeout(() => {
+            setOpenModal(false);
+        }, 500);
+    }
 
     useEffect(() => {
         getThisUserInfo();
@@ -122,17 +146,74 @@ const EditUserForm = ({ state }: ModalStateProps) => {
                 className="py-2"
             />
 
-            <Title className="block w-full mt-4 text-start">Extratos</Title>
+            <Flex className="gap-2" alignItems="center" justifyContent="start">
+                <Title className="block text-start">Extratos</Title>
+                <Icon onClick={() => setNewExtract({
+                    ...newExtract,
+                    isOpen: !newExtract.isOpen
+                })} icon={PlusIcon} className="cursor-pointer" size="xs" color="violet" variant="light" tooltip="Adicionar extrato"></Icon>
+            </Flex>
+
+            {newExtract.isOpen && (
+                <Flex flexDirection="col" className="gap-2">
+                    <TextInput
+                        onChange={(evt) => setNewExtract({
+                            ...newExtract,
+                            info: {
+                                ...newExtract.info,
+                                value: evt.target.value
+                            }
+                        })}
+                        type="text"
+                        icon={CurrencyDollarIcon}
+                        placeholder="Valor apostado"
+                        className="py-2"
+                    />
+
+                    <TextInput
+                        onChange={(evt) => setNewExtract({
+                            ...newExtract,
+                            info: {
+                                ...newExtract.info,
+                                quotes: evt.target.value
+                            }
+                        })}
+                        type="text"
+                        icon={XMarkIcon}
+                        placeholder="Multiplicador"
+                        className="py-2"
+                    />
+
+                    {console.log()}
+
+                    <TextInput
+                        type="text"
+                        icon={TrophyIcon}
+                        className="py-2"
+                        disabled
+                        value={`Valor ganho: ${CentsToReais((newExtract.info.value && newExtract.info.quotes) ? (newExtract.info.quotes * ReaisToCents(newExtract.info.value)) : 0)}`}
+                    />
+
+                    <input onChange={(evt) => setNewExtract({
+                        ...newExtract,
+                        info: {
+                            ...newExtract.info,
+                            date: evt.target.value
+                        }
+                    })} type="datetime-local" className="w-full p-4 text-sm border rounded-xl" />
+                    <Button onClick={() => insertExtract()} className="w-full p-3" icon={PlusIcon}>Criar novo extrato</Button>
+                </Flex>
+            )}
 
             <Flex flexDirection="col" className="p-2 border border-gray-300 rounded-lg">
 
-                <Table className="w-full">
+                <Table className="w-full max-h-[400px]">
                     <TableHead>
                         <TableRow>
-                            <TableHeaderCell>Valor aposta</TableHeaderCell>
-                            <TableHeaderCell>Multiplicador</TableHeaderCell>
-                            <TableHeaderCell>Valor obtido</TableHeaderCell>
-                            <TableHeaderCell>Data</TableHeaderCell>
+                            <TableHeaderCell className="bg-white z-[999]">Valor aposta</TableHeaderCell>
+                            <TableHeaderCell className="bg-white z-[999]">Multiplicador</TableHeaderCell>
+                            <TableHeaderCell className="bg-white z-[999]">Valor obtido</TableHeaderCell>
+                            <TableHeaderCell className="bg-white z-[999]">Data</TableHeaderCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -141,6 +222,7 @@ const EditUserForm = ({ state }: ModalStateProps) => {
                                 {
                                     [...Array(5)].map((_, i) => (
                                         <TableRow key={i} className="animate-pulse">
+                                            <TableCell><Skeleton /></TableCell>
                                             <TableCell><Skeleton /></TableCell>
                                             <TableCell><Skeleton /></TableCell>
                                             <TableCell><Skeleton /></TableCell>
@@ -156,7 +238,7 @@ const EditUserForm = ({ state }: ModalStateProps) => {
                                             <TableCell>{CentsToReais(item.value)}</TableCell>
                                             <TableCell>{item.quotes}x</TableCell>
                                             <TableCell>{CentsToReais(item.value * parseFloat(item.quotes))}</TableCell>
-                                            <TableCell>{(item.created_at && moment(item.created_at).format("DD/MM/YYYY hh:mm:ss")) || <Text className="opacity-50">Não informado</Text>}</TableCell>
+                                            <TableCell>{(item.date && moment(item.date).format("DD/MM/YYYY hh:mm:ss")) || <Text className="opacity-50">Não informado</Text>}</TableCell>
                                         </TableRow>
                                     ))
                                 }
@@ -168,7 +250,7 @@ const EditUserForm = ({ state }: ModalStateProps) => {
             </Flex>
 
 
-            <Button loading={fetching} loadingText="Alterando senha..." onClick={() => submitForm()} className="w-full p-3" icon={PlusIcon}>Alterar senha do usuário</Button>
+            <Button loading={fetching} loadingText="Alterando dados..." onClick={() => submitForm()} className="w-full p-3" icon={ArrowPathIcon}>Alterar dados do usuário</Button>
         </>
 
     )
