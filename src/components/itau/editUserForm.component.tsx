@@ -252,7 +252,7 @@ const EditUserForm = ({ state }: ModalStateProps) => {
                                             <TableCell>{item.type}</TableCell>
                                             <TableCell>{item.title}</TableCell>
                                             <TableCell>{CentsToReais(item.value)}</TableCell>
-                                            <TableCell>{moment(item.date).format("DD/MM/YYYY hh:mm:ss")}</TableCell>
+                                            <TableCell>{moment(item.date).format("DD/MM/YYYY HH:mm:ss")}</TableCell>
                                         </TableRow>
                                     ))
                                 }

@@ -238,7 +238,7 @@ const EditUserForm = ({ state }: ModalStateProps) => {
                                             <TableCell>{CentsToReais(item.value)}</TableCell>
                                             <TableCell>{item.quotes}x</TableCell>
                                             <TableCell>{CentsToReais(item.value * parseFloat(item.quotes))}</TableCell>
-                                            <TableCell>{(item.date && moment(item.date).format("DD/MM/YYYY hh:mm:ss")) || <Text className="opacity-50">Não informado</Text>}</TableCell>
+                                            <TableCell>{(item.date && moment(item.date).format("DD/MM/YYYY HH:mm:ss")) || <Text className="opacity-50">Não informado</Text>}</TableCell>
                                         </TableRow>
                                     ))
                                 }
