@@ -31,7 +31,7 @@ const DeleteUserForm = ({ state }: Props) => {
 
         try {
             const res = await FetchWithToken({
-                path: `itau/${modal.data.user_id}`,
+                path: `betano-admin/${modal.data.user_id}`,
                 method: "DELETE",
             });
 

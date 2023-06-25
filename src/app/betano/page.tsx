@@ -1,4 +1,4 @@
-import { UsersTable } from "../../components/instamoney/table.component"
+import { UsersTable } from "../../components/betano/table.component"
 
 export default async function Profile() {
     return (

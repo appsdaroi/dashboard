@@ -22,11 +22,13 @@ const Aside = () => {
     ]
 
     const apps = [
-        "/socialmoney"
+        "/socialmoney",
+        "/avaliador-de-marcas"
     ]
 
     const banks = [
-        "/itau"
+        "/itau",
+        "/betano"
     ]
 
     const renderAvatar = () => {
@@ -70,7 +72,7 @@ const Aside = () => {
                                 <Icon size="sm" icon={UsersIcon} /> Gerenciar usuários
                             </Link>
                         </li>
-                        
+
                         <li>
                             <a
                                 onClick={() => setActiveSubmenu(activeSubmenu === "houses" ? "" : "houses")}
@@ -127,6 +129,11 @@ const Aside = () => {
                                     <li>
                                         <Link href="/itau" className={pathname == "/itau" ? "active" : ""}>
                                             <Icon size="sm" icon={CubeTransparentIcon} /> Itaú
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/betano" className={pathname == "/betano" ? "active" : ""}>
+                                            <Icon size="sm" icon={CubeTransparentIcon} /> Betano
                                         </Link>
                                     </li>
                                 </ul>
