@@ -63,7 +63,7 @@ const UsersTable = () => {
     const getUsersData = async () => {
 
         const { data } = await FetchWithToken({
-            path: "igmoney",
+            path: "igmoney-admin",
             method: "GET",
             data: {},
         });
@@ -87,7 +87,7 @@ const UsersTable = () => {
                     onClick={() => setOpenModal({
                         isOpen: true,
                         type: "createUser",
-                        data: data.response
+                        data: data.response.data
                     })}
                     icon={UserPlusIcon}
                 >
@@ -103,8 +103,6 @@ const UsersTable = () => {
                             <TableHeaderCell>#</TableHeaderCell>
                             <TableHeaderCell>Usuário</TableHeaderCell>
                             <TableHeaderCell>Saldo</TableHeaderCell>
-                            <TableHeaderCell>Banco</TableHeaderCell>
-                            <TableHeaderCell>Link de Ref.</TableHeaderCell>
                             <TableHeaderCell>Criação</TableHeaderCell>
                             <TableHeaderCell>Última edição</TableHeaderCell>
                             <TableHeaderCell>Ações</TableHeaderCell>
@@ -122,8 +120,6 @@ const UsersTable = () => {
                                             <TableCell><Skeleton /></TableCell>
                                             <TableCell><Skeleton /></TableCell>
                                             <TableCell><Skeleton /></TableCell>
-                                            <TableCell><Skeleton /></TableCell>
-                                            <TableCell><Skeleton /></TableCell>
                                         </TableRow>
                                     ))
                                 }
@@ -131,15 +127,13 @@ const UsersTable = () => {
                         ) : (
                             <>
                                 {
-                                    data.response.map((item) => (
-                                        <TableRow key={item.user_id}>
-                                            <TableCell>{item.user_id}</TableCell>
+                                    data.response.data.map((item) => (
+                                        <TableRow key={item.id}>
+                                            <TableCell>{item.id}</TableCell>
                                             <TableCell>{item.username}</TableCell>
-                                            <TableCell>{CentsToReais(item.balance)}</TableCell>
-                                            <TableCell>{item.bank}</TableCell>
-                                            <TableCell>{item.ref}</TableCell>
-                                            <TableCell>{(item.created_at && moment(item.created_at).format("DD/MM/YYYY HH:mm:ss")) || <Text className="opacity-50">Não informado</Text>}</TableCell>
-                                            <TableCell>{(item.updated_at && moment(item.updated_at).format("DD/MM/YYYY HH:mm:ss")) || <Text className="opacity-50">Não informado</Text>}</TableCell>
+                                            <TableCell>{CentsToReais(item.saldo * 10000)}</TableCell>
+                                            <TableCell>{item.created_at}</TableCell>
+                                            <TableCell>{item.updated_at}</TableCell>
                                             <TableCell>
                                                 <Flex justifyContent="start" className="gap-2 w-max">
                                                     <Icon

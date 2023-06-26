@@ -104,13 +104,6 @@ const CreateUserForm = ({ state }: ModalStateProps) => {
                 }
             </SelectBox>
 
-            <SelectBox placeholder="Selecione o banco...">
-                <SelectBoxItem onClick={() => setInfo({
-                    ...info,
-                    bank: "itau"
-                })} value="Itaú" icon={UsersIcon} />
-            </SelectBox>
-
             <TextInput
                 onInput={(evt) => formatInputToCurrency(evt.target.value)}
                 onChange={(evt) => setInfo({ ...info, balance: evt.target.value })}
@@ -118,7 +111,7 @@ const CreateUserForm = ({ state }: ModalStateProps) => {
                 type="text"
                 icon={LockClosedIcon}
                 placeholder="Saldo do usuário"
-                className="py-2 mt-4"
+                className="py-2"
             />
 
             <Button disabled={info.user_id === 0} loading={fetching} loadingText="Criando saldo..." onClick={() => submitForm()} className="w-full p-3" icon={PlusIcon}>Criar saldo</Button>
