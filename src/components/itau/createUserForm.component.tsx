@@ -113,7 +113,7 @@ const CreateUserForm = ({ state }: ModalStateProps) => {
                 className="py-2 mt-4"
             />
 
-            <Button loading={fetching} loadingText="Criando saldo..." onClick={() => submitForm()} className="w-full p-3" icon={PlusIcon}>Criar saldo</Button>
+            <Button disabled={info.user_id === 0} loading={fetching} loadingText="Criando saldo..." onClick={() => submitForm()} className="w-full p-3" icon={PlusIcon}>Criar saldo</Button>
         </>
 
     )
