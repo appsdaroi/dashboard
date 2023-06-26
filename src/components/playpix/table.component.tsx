@@ -128,8 +128,8 @@ const UsersTable = () => {
                                             <TableCell>{item.user_id}</TableCell>
                                             <TableCell>{item.username}</TableCell>
                                             <TableCell>{CentsToReais(item.balance)}</TableCell>
-                                            <TableCell>{(item.created_at && moment(item.created_at).format("DD/MM/YYYY hh:mm:ss")) || <Text className="opacity-50">Não informado</Text>}</TableCell>
-                                            <TableCell>{(item.updated_at && moment(item.updated_at).format("DD/MM/YYYY hh:mm:ss")) || <Text className="opacity-50">Não informado</Text>}</TableCell>
+                                            <TableCell>{(item.created_at && moment(item.created_at).format("DD/MM/YYYY HH:mm:ss")) || <Text className="opacity-50">Não informado</Text>}</TableCell>
+                                            <TableCell>{(item.updated_at && moment(item.updated_at).format("DD/MM/YYYY HH:mm:ss")) || <Text className="opacity-50">Não informado</Text>}</TableCell>
                                             <TableCell>
                                                 <Flex justifyContent="start" className="gap-2 w-max">
                                                     <Icon

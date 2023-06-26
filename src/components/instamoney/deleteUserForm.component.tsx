@@ -26,27 +26,27 @@ const DeleteUserForm = ({ state }: Props) => {
     const [modal, setOpenModal] = state;
     const [fetching, setFetching] = useState(false)
 
-    const submitForm = async ({ id, username }: UserProps) => {
+    const submitForm = async () => {
         setFetching(true);
 
-        if (!id) {
+        if (!modal.data.id) {
             setFetching(false);
             return toast.error("ID do usuário não encontrado.")
         }
 
         try {
             const res = await FetchWithToken({
-                path: `socialmoney/${id}`,
+                path: `igmoney-admin-users/${modal.data.id}`,
                 method: "DELETE",
             });
 
             if (res.status !== 200) return toast.error(`Erro ao excluir saldo de ${username}.`)
             
-            toast.success(`Saldo de ${username} foi excluído com sucesso!`)
+            toast.success(`Saldo de ${modal.data.username} foi excluído com sucesso!`)
             setOpenModal(false)
         } catch {
             setFetching(false);
-            return toast.error(`Erro ao excluir saldo de ${username}.`)
+            return toast.error(`Erro ao excluir saldo de ${modal.data.username}.`)
         }
     }
 
@@ -61,7 +61,7 @@ const DeleteUserForm = ({ state }: Props) => {
             </Flex>
 
 
-            <Button color="red" loading={fetching} loadingText="Excluindo usuário..." onClick={() => submitForm(modal.data)} className="w-full p-3" icon={TrashIcon}>Sim, quero excluir o usuário!</Button>
+            <Button color="red" loading={fetching} loadingText="Excluindo usuário..." onClick={() => submitForm()} className="w-full p-3" icon={TrashIcon}>Sim, quero excluir o usuário!</Button>
         </>
 
     )

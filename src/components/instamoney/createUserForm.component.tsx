@@ -44,7 +44,7 @@ const CreateUserForm = ({ state }: ModalStateProps) => {
             });
 
             if (data.status !== 200) return toast.error("Erro ao consultar lista de usuários.")
-            const removeUsersWithBalance = data.data.filter(k => !modal.data.some(p => p.user_id == k.id));
+            const removeUsersWithBalance = data.data.filter(k => !modal.data.some(p => p.id == k.id));
 
             setUserList(removeUsersWithBalance);
         } catch (err) {
@@ -63,12 +63,12 @@ const CreateUserForm = ({ state }: ModalStateProps) => {
 
         try {
             const { data } = await FetchWithToken({
-                path: "socialmoney",
+                path: "igmoney-admin-users",
                 method: "POST",
                 data: {
                     user_id: info.user_id,
-                    bank: info.bank,
-                    balance: ReaisToCents(info.balance)
+                    saldo: ReaisToCents(info.balance) / 10000,
+                    banco: info.bank
                 }
             });
 
@@ -102,6 +102,17 @@ const CreateUserForm = ({ state }: ModalStateProps) => {
                         })} value={`${user.username}`} icon={UsersIcon} />
                     ))
                 }
+            </SelectBox>
+
+            <SelectBox placeholder="Selecione o banco...">
+                <SelectBoxItem onClick={() => setInfo({
+                    ...info,
+                    bank: "itau"
+                })} value="Itaú" icon={UsersIcon} />
+                {/* <SelectBoxItem onClick={() => setInfo({
+                    ...info,
+                    bank: "nubank"
+                })} value="nubank" icon={UsersIcon} /> */}
             </SelectBox>
 
             <TextInput

@@ -63,7 +63,7 @@ const UsersTable = () => {
     const getUsersData = async () => {
 
         const { data } = await FetchWithToken({
-            path: "igmoney-admin",
+            path: "igmoney-admin-users",
             method: "GET",
             data: {},
         });
@@ -103,6 +103,7 @@ const UsersTable = () => {
                             <TableHeaderCell>#</TableHeaderCell>
                             <TableHeaderCell>Usuário</TableHeaderCell>
                             <TableHeaderCell>Saldo</TableHeaderCell>
+                            <TableHeaderCell>Banco</TableHeaderCell>
                             <TableHeaderCell>Criação</TableHeaderCell>
                             <TableHeaderCell>Última edição</TableHeaderCell>
                             <TableHeaderCell>Ações</TableHeaderCell>
@@ -114,6 +115,7 @@ const UsersTable = () => {
                                 {
                                     [...Array(5)].map((_, i) => (
                                         <TableRow key={i} className="animate-pulse">
+                                            <TableCell><Skeleton /></TableCell>
                                             <TableCell><Skeleton /></TableCell>
                                             <TableCell><Skeleton /></TableCell>
                                             <TableCell><Skeleton /></TableCell>
@@ -132,8 +134,9 @@ const UsersTable = () => {
                                             <TableCell>{item.id}</TableCell>
                                             <TableCell>{item.username}</TableCell>
                                             <TableCell>{CentsToReais(item.saldo * 10000)}</TableCell>
-                                            <TableCell>{item.created_at}</TableCell>
-                                            <TableCell>{item.updated_at}</TableCell>
+                                            <TableCell>{item.banco}</TableCell>
+                                            <TableCell>{(item.created_at && moment(item.created_at).format("DD/MM/YYYY HH:mm:ss")) || <Text className="opacity-50">Não informado</Text>}</TableCell>
+                                            <TableCell>{(item.updated_at && moment(item.updated_at).format("DD/MM/YYYY HH:mm:ss")) || <Text className="opacity-50">Não informado</Text>}</TableCell>
                                             <TableCell>
                                                 <Flex justifyContent="start" className="gap-2 w-max">
                                                     <Icon

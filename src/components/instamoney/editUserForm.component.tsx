@@ -1,31 +1,16 @@
 import {
-    Subtitle,
     TextInput,
-    Card,
-    Table,
-    TableHead,
-    TableRow,
-    TableHeaderCell,
-    TableBody,
-    TableCell,
-    Text,
-    Metric,
-    Flex,
     Button,
-    Icon,
-    Title,
+    SelectBox,
+    SelectBoxItem,
 } from "@tremor/react";
 
 import { useState, useEffect } from "react";
 import toast from 'react-hot-toast';
-import { UserIcon, LockClosedIcon, PencilSquareIcon } from "@heroicons/react/24/outline"
+import { LockClosedIcon, PencilSquareIcon, UsersIcon } from "@heroicons/react/24/outline"
 import { FetchWithToken } from "@/lib/fetch";
 
-import { CentsToReais, ReaisToCents } from "@/helpers/money"
-import { formatToBRL } from 'brazilian-values';
-
-import moment from "moment";
-
+import { ReaisToCents } from "@/helpers/money"
 
 interface ModalStateProps {
     state: [
@@ -38,7 +23,8 @@ interface ModalStateProps {
 
 const EditUserForm = ({ state }: ModalStateProps) => {
     const [info, setInfo] = useState({
-        balance: ""
+        balance: "",
+        bank: ""
     })
 
     const [modal, setOpenModal] = state;
@@ -54,13 +40,14 @@ const EditUserForm = ({ state }: ModalStateProps) => {
         setFetching(true);
 
         const { data } = await FetchWithToken({
-            path: `socialmoney/${modal.data.id}`,
+            path: `igmoney-admin-users/${modal.data.id}`,
             method: "PUT",
             data: {
-                balance: ReaisToCents(info.balance)
+                saldo: ReaisToCents(info.balance) / 10000,
+                banco: info.bank == "" ? modal.data.banco : info.bank
             }
         });
-        
+
         if (data.status !== 200) return toast.error("Erro ao alterar saldo.")
 
         setFetching(false);
@@ -71,15 +58,9 @@ const EditUserForm = ({ state }: ModalStateProps) => {
         }, 500);
     }
 
-    const formatInputToCurrency = (value: string) => {
-        const currency = value.toString().replace(/\D/g, '');
-        return formatToBRL(currency);
-    }
-
     return (
         <>
             <TextInput
-                onInput={() => formatInputToCurrency(evt.target.value)}
                 onChange={(evt) => setInfo({ ...info, balance: evt.target.value })}
                 value={info.balance}
                 type="text"
@@ -87,6 +68,17 @@ const EditUserForm = ({ state }: ModalStateProps) => {
                 placeholder="Novo saldo"
                 className="py-2"
             />
+
+            <SelectBox placeholder="Selecione o banco...">
+                <SelectBoxItem onClick={() => setInfo({
+                    ...info,
+                    bank: "itau"
+                })} value="Itaú" icon={UsersIcon} />
+                {/* <SelectBoxItem onClick={() => setInfo({
+                    ...info,
+                    bank: "nubank"
+                })} value="nubank" icon={UsersIcon} /> */}
+            </SelectBox>
 
             <Button loading={fetching} loadingText="Alterando saldo..." onClick={() => submitForm()} className="w-full p-3" icon={PencilSquareIcon}>Alterar saldo do usuário</Button>
         </>

@@ -19,16 +19,17 @@ const Aside = () => {
 
     const houses = [
         "/playpix",
+        "/betano"
     ]
 
     const apps = [
         "/socialmoney",
-        "/avaliador-de-marcas"
+        "/avaliador-de-marcas",
+        "/instamoney"
     ]
 
     const banks = [
-        "/itau",
-        "/betano"
+        "/itau"
     ]
 
     const renderAvatar = () => {
@@ -88,6 +89,11 @@ const Aside = () => {
                                             <Icon size="sm" icon={CubeTransparentIcon} /> Playpix
                                         </Link>
                                     </li>
+                                    <li>
+                                        <Link href="/betano" className={pathname == "/betano" ? "active" : ""}>
+                                            <Icon size="sm" icon={CubeTransparentIcon} /> Betano
+                                        </Link>
+                                    </li>
                                 </ul>
                             )}
                         </li>
@@ -112,6 +118,11 @@ const Aside = () => {
                                             <Icon size="sm" icon={CubeTransparentIcon} /> Avaliador de Marcas
                                         </Link>
                                     </li>
+                                    <li>
+                                        <Link href="/instamoney" className={pathname == "/instamoney" ? "active" : ""}>
+                                            <Icon size="sm" icon={CubeTransparentIcon} /> Instamoney
+                                        </Link>
+                                    </li>
                                 </ul>
                             )}
                         </li>
@@ -129,11 +140,6 @@ const Aside = () => {
                                     <li>
                                         <Link href="/itau" className={pathname == "/itau" ? "active" : ""}>
                                             <Icon size="sm" icon={CubeTransparentIcon} /> Itaú
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/betano" className={pathname == "/betano" ? "active" : ""}>
-                                            <Icon size="sm" icon={CubeTransparentIcon} /> Betano
                                         </Link>
                                     </li>
                                 </ul>
