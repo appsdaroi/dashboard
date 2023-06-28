@@ -25,6 +25,7 @@ const Aside = () => {
     const apps = [
         "/socialmoney",
         "/avaliador-de-marcas",
+        "/avaliador-premiado",
         "/instamoney"
     ]
 
@@ -108,14 +109,19 @@ const Aside = () => {
 
                             {(activeSubmenu === "apps" || apps.includes(pathname)) && (
                                 <ul className="flex-1 w-full scale-90">
-                                    <li>
+                                    {/* <li>
                                         <Link href="/socialmoney" className={pathname == "/socialmoney" ? "active" : ""}>
                                             <Icon size="sm" icon={CubeTransparentIcon} /> Socialmoney
                                         </Link>
-                                    </li>
+                                    </li> */}
                                     <li>
                                         <Link href="/avaliador-de-marcas" className={pathname == "/avaliador-de-marcas" ? "active" : ""}>
                                             <Icon size="sm" icon={CubeTransparentIcon} /> Avaliador de Marcas
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/avaliador-premiado" className={pathname == "/avaliador-premiado" ? "active" : ""}>
+                                            <Icon size="sm" icon={CubeTransparentIcon} /> Avaliador Premiado
                                         </Link>
                                     </li>
                                     <li>
