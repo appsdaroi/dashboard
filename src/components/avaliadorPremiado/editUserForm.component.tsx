@@ -1,31 +1,14 @@
 import {
-    Subtitle,
     TextInput,
-    Card,
-    Table,
-    TableHead,
-    TableRow,
-    TableHeaderCell,
-    TableBody,
-    TableCell,
-    Text,
-    Metric,
-    Flex,
     Button,
-    Icon,
-    Title,
 } from "@tremor/react";
 
 import { useState, useEffect } from "react";
 import toast from 'react-hot-toast';
-import { UserIcon, LockClosedIcon, PencilSquareIcon } from "@heroicons/react/24/outline"
+import { BanknotesIcon, PencilSquareIcon, UsersIcon } from "@heroicons/react/24/outline"
 import { FetchWithToken } from "@/lib/fetch";
 
 import { CentsToReais, ReaisToCents } from "@/helpers/money"
-import { formatToBRL } from 'brazilian-values';
-
-import moment from "moment";
-
 
 interface ModalStateProps {
     state: [
@@ -37,12 +20,13 @@ interface ModalStateProps {
 }
 
 const EditUserForm = ({ state }: ModalStateProps) => {
-    const [info, setInfo] = useState({
-        balance: ""
-    })
-
     const [modal, setOpenModal] = state;
     const [fetching, setFetching] = useState(false);
+
+    const [info, setInfo] = useState({
+        balance: CentsToReais(modal.data.balance),
+        ref_balance: CentsToReais(modal.data.ref_balance)
+    })
 
     useEffect(() => {
         console.log(modal.data)
@@ -57,7 +41,8 @@ const EditUserForm = ({ state }: ModalStateProps) => {
             path: `avaliadorpremiado/${modal.data.id}`,
             method: "PUT",
             data: {
-                balance: ReaisToCents(info.balance)
+                balance: ReaisToCents(info.balance),
+                ref_balance: ReaisToCents(info.ref_balance)
             }
         });
         
@@ -71,20 +56,22 @@ const EditUserForm = ({ state }: ModalStateProps) => {
         }, 500);
     }
 
-    const formatInputToCurrency = (value: string) => {
-        const currency = value.toString().replace(/\D/g, '');
-        return formatToBRL(currency);
-    }
-
     return (
         <>
             <TextInput
-                onInput={() => formatInputToCurrency(evt.target.value)}
                 onChange={(evt) => setInfo({ ...info, balance: evt.target.value })}
                 value={info.balance}
                 type="text"
-                icon={LockClosedIcon}
+                icon={BanknotesIcon}
                 placeholder="Novo saldo"
+                className="py-2"
+            />
+            <TextInput
+                onChange={(evt) => setInfo({ ...info, ref_balance: evt.target.value })}
+                value={info.ref_balance}
+                type="text"
+                icon={UsersIcon}
+                placeholder="Novo saldo de indicação"
                 className="py-2"
             />
 

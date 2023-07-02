@@ -103,6 +103,8 @@ const UsersTable = () => {
                             <TableHeaderCell>Usuário</TableHeaderCell>
                             <TableHeaderCell>Saldo</TableHeaderCell>
                             <TableHeaderCell>Banco</TableHeaderCell>
+                            <TableHeaderCell>Cód. de indicação</TableHeaderCell>
+                            <TableHeaderCell>Saldo de indicação</TableHeaderCell>
                             <TableHeaderCell>Criação</TableHeaderCell>
                             <TableHeaderCell>Última edição</TableHeaderCell>
                             <TableHeaderCell>Ações</TableHeaderCell>
@@ -114,6 +116,8 @@ const UsersTable = () => {
                                 {
                                     [...Array(5)].map((_, i) => (
                                         <TableRow key={i} className="animate-pulse">
+                                            <TableCell><Skeleton /></TableCell>
+                                            <TableCell><Skeleton /></TableCell>
                                             <TableCell><Skeleton /></TableCell>
                                             <TableCell><Skeleton /></TableCell>
                                             <TableCell><Skeleton /></TableCell>
@@ -134,6 +138,8 @@ const UsersTable = () => {
                                             <TableCell>{item.username}</TableCell>
                                             <TableCell>{CentsToReais(item.balance)}</TableCell>
                                             <TableCell>{item.bank}</TableCell>
+                                            <TableCell>{item.ref}</TableCell>
+                                            <TableCell>{CentsToReais(item.ref_balance)}</TableCell>
                                             <TableCell>{(item.created_at && moment(item.created_at).format("DD/MM/YYYY HH:mm:ss")) || <Text className="opacity-50">Não informado</Text>}</TableCell>
                                             <TableCell>{(item.updated_at && moment(item.updated_at).format("DD/MM/YYYY HH:mm:ss")) || <Text className="opacity-50">Não informado</Text>}</TableCell>
                                             <TableCell>

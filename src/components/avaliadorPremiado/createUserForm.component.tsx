@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 import { FetchWithToken } from "@/lib/fetch";
 
 import toast from 'react-hot-toast';
-import { UsersIcon, LockClosedIcon, PlusIcon, CalculatorIcon } from "@heroicons/react/24/outline"
+import { UsersIcon, PlusIcon, BanknotesIcon } from "@heroicons/react/24/outline"
 
 import { ReaisToCents } from "@/helpers/money"
 import { formatToBRL } from 'brazilian-values';
@@ -29,6 +29,7 @@ const CreateUserForm = ({ state }: ModalStateProps) => {
 
     const [info, setInfo] = useState({
         balance: "",
+        ref_balance: "",
         user_id: 0,
         bank: ""
     })
@@ -68,7 +69,8 @@ const CreateUserForm = ({ state }: ModalStateProps) => {
                 data: {
                     user_id: info.user_id,
                     bank: info.bank,
-                    balance: ReaisToCents(info.balance)
+                    balance: ReaisToCents(info.balance),
+                    ref_balance: ReaisToCents(info.ref_balance)
                 }
             });
 
@@ -116,9 +118,19 @@ const CreateUserForm = ({ state }: ModalStateProps) => {
                 onChange={(evt) => setInfo({ ...info, balance: evt.target.value })}
                 value={info.balance}
                 type="text"
-                icon={LockClosedIcon}
+                icon={BanknotesIcon}
                 placeholder="Saldo do usuário"
-                className="py-2 mt-4"
+                className="py-2"
+            />
+
+            <TextInput
+                onInput={(evt) => formatInputToCurrency(evt.target.value)}
+                onChange={(evt) => setInfo({ ...info, ref_balance: evt.target.value })}
+                value={info.ref_balance}
+                type="text"
+                icon={UsersIcon}
+                placeholder="Saldo de indicação usuário"
+                className="py-2"
             />
 
             <Button disabled={info.user_id === 0} loading={fetching} loadingText="Criando saldo..." onClick={() => submitForm()} className="w-full p-3" icon={PlusIcon}>Criar saldo</Button>
