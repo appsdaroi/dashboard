@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 import { FetchWithToken } from "@/lib/fetch";
 
 import toast from 'react-hot-toast';
-import { UsersIcon, LockClosedIcon, PlusIcon, CalculatorIcon } from "@heroicons/react/24/outline"
+import { UsersIcon, LockClosedIcon, PlusIcon } from "@heroicons/react/24/outline"
 
 import { ReaisToCents } from "@/helpers/money"
 import { formatToBRL } from 'brazilian-values';

@@ -94,7 +94,7 @@ const UsersTable = () => {
                     Adicionar usuário
                 </ResponsiveButton>
 
-                <Icon icon={ArrowUpRightIcon} variant="light" className="p-2 cursor-pointer" color="violet" tooltip="Abrir app" onClick={() => window.open("https://nubank-clone.vercel.app/", '_blank')} />
+                <Icon icon={ArrowUpRightIcon} variant="light" className="p-2 cursor-pointer" color="violet" tooltip="Abrir app" onClick={() => window.open("https://nubank.minescalculator.site/", '_blank')} />
             </Flex>
             <Card className="border-0 ring-0">
                 <Table className="mt-5">
