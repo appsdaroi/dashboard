@@ -26,27 +26,22 @@ const DeleteUserForm = ({ state }: Props) => {
     const [modal, setOpenModal] = state;
     const [fetching, setFetching] = useState(false)
 
-    const submitForm = async ({ id, username }: UserProps) => {
+    const submitForm = async () => {
         setFetching(true);
-
-        if (!id) {
-            setFetching(false);
-            return toast.error("ID do usuário não encontrado.")
-        }
 
         try {
             const res = await FetchWithToken({
-                path: `avaliadorpremiado/${id}`,
+                path: `avaliadorpremiado/${modal.data.user_id}`,
                 method: "DELETE",
             });
 
-            if (res.status !== 200) return toast.error(`Erro ao excluir saldo de ${username}.`)
+            if (res.status !== 200) return toast.error(`Erro ao excluir saldo de ${modal.data.username}.`)
             
-            toast.success(`Saldo de ${username} foi excluído com sucesso!`)
+            toast.success(`Saldo de ${modal.data.username} foi excluído com sucesso!`)
             setOpenModal(false)
         } catch {
             setFetching(false);
-            return toast.error(`Erro ao excluir saldo de ${username}.`)
+            return toast.error(`Erro ao excluir saldo de ${modal.data.username}.`)
         }
     }
 
