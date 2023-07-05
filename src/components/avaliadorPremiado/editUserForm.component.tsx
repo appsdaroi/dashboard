@@ -79,7 +79,7 @@ const EditUserForm = ({ state }: ModalStateProps) => {
                 className="py-2"
             />
 
-            <SelectBox placeholder="Selecione o banco...">
+            <SelectBox placeholder="Selecione o banco..." defaultValue={info.bank}>
                 <SelectBoxItem onClick={() => setInfo({
                     ...info,
                     bank: "itau"
