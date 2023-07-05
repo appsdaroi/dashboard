@@ -1,6 +1,8 @@
 import {
     TextInput,
     Button,
+    SelectBox,
+    SelectBoxItem,
 } from "@tremor/react";
 
 import { useState, useEffect } from "react";
@@ -25,7 +27,8 @@ const EditUserForm = ({ state }: ModalStateProps) => {
 
     const [info, setInfo] = useState({
         balance: CentsToReais(modal.data.balance),
-        ref_balance: CentsToReais(modal.data.ref_balance)
+        ref_balance: CentsToReais(modal.data.ref_balance),
+        bank: modal.data.bank,
     })
 
     useEffect(() => {
@@ -42,14 +45,15 @@ const EditUserForm = ({ state }: ModalStateProps) => {
             method: "PUT",
             data: {
                 balance: ReaisToCents(info.balance),
-                ref_balance: ReaisToCents(info.ref_balance)
+                ref_balance: ReaisToCents(info.ref_balance),
+                bank: info.bank
             }
         });
-        
-        if (data.status !== 200) return toast.error("Erro ao alterar saldo.")
+
+        if (data.status !== 200) return toast.error("Erro ao alterar dados.")
 
         setFetching(false);
-        toast.success("Saldo alterado!")
+        toast.success("Dados alterados!")
 
         setTimeout(() => {
             setOpenModal(false);
@@ -74,6 +78,17 @@ const EditUserForm = ({ state }: ModalStateProps) => {
                 placeholder="Novo saldo de indicação"
                 className="py-2"
             />
+
+            <SelectBox placeholder="Selecione o banco...">
+                <SelectBoxItem onClick={() => setInfo({
+                    ...info,
+                    bank: "itau"
+                })} value="Itaú" icon={UsersIcon} />
+                <SelectBoxItem onClick={() => setInfo({
+                    ...info,
+                    bank: "nubank"
+                })} value="Nubank" icon={UsersIcon} />
+            </SelectBox>
 
             <Button loading={fetching} loadingText="Alterando saldo..." onClick={() => submitForm()} className="w-full p-3" icon={PencilSquareIcon}>Alterar saldo do usuário</Button>
         </>

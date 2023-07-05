@@ -111,6 +111,10 @@ const CreateUserForm = ({ state }: ModalStateProps) => {
                     ...info,
                     bank: "itau"
                 })} value="Itaú" icon={UsersIcon} />
+                <SelectBoxItem onClick={() => setInfo({
+                    ...info,
+                    bank: "nubank"
+                })} value="Nubank" icon={UsersIcon} />
             </SelectBox>
 
             <TextInput
