@@ -28,7 +28,7 @@ const CreateUserForm = ({ state }: ModalStateProps) => {
     const [modal, setOpenModal] = state;
 
     const [info, setInfo] = useState({
-        saldo: "",
+        balance: "",
         user_id: 0,
     })
 
@@ -66,7 +66,7 @@ const CreateUserForm = ({ state }: ModalStateProps) => {
                 method: "POST",
                 data: {
                     user_id: info.user_id,
-                    saldo: ReaisToCents(info.saldo)
+                    balance: ReaisToCents(info.balance)
                 }
             });
 
@@ -104,8 +104,8 @@ const CreateUserForm = ({ state }: ModalStateProps) => {
 
             <TextInput
                 onInput={(evt) => formatInputToCurrency(evt.target.value)}
-                onChange={(evt) => setInfo({ ...info, saldo: evt.target.value })}
-                value={info.saldo}
+                onChange={(evt) => setInfo({ ...info, balance: evt.target.value })}
+                value={info.balance}
                 type="text"
                 icon={LockClosedIcon}
                 placeholder="Saldo do usuário"

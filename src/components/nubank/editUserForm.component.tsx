@@ -36,7 +36,7 @@ interface ModalStateProps {
 
 const EditUserForm = ({ state }: ModalStateProps) => {
     const [info, setInfo] = useState({
-        saldo: "",
+        balance: "",
         extracts: []
     })
 
@@ -47,10 +47,10 @@ const EditUserForm = ({ state }: ModalStateProps) => {
     const [newExtract, setNewExtract] = useState({
         isOpen: false,
         info: {
-            tipo: "",
-            remetente: "",
-            valor: "",
-            data: ""
+            type: "",
+            title: "",
+            value: "",
+            date: ""
         }
     });
 
@@ -64,7 +64,7 @@ const EditUserForm = ({ state }: ModalStateProps) => {
             const extracts = data.response;
 
             setInfo({
-                saldo: CentsToReais(modal.data.saldo),
+                balance: CentsToReais(modal.data.balance),
                 extracts
             })
 
@@ -95,10 +95,10 @@ const EditUserForm = ({ state }: ModalStateProps) => {
                 path: `nubank/${modal.data.user_id}/extracts`,
                 method: "POST",
                 data: {
-                    valor: ReaisToCents(newExtract.info.valor),
-                    data: moment(newExtract.info.data).format("YYYY-MM-DD HH:mm:ss"),
-                    tipo: newExtract.info.tipo,
-                    remetente: newExtract.info.remetente
+                    value: ReaisToCents(newExtract.info.value),
+                    date: moment(newExtract.info.date).format("YYYY-MM-DD HH:mm:ss"),
+                    type: newExtract.info.type,
+                    title: newExtract.info.title
                 }
             });
 
@@ -112,7 +112,7 @@ const EditUserForm = ({ state }: ModalStateProps) => {
 
     const submitForm = async () => {
         console.log(info)
-        if (info.saldo == null && info.saldo?.length === 0) return toast.error("Preencha um dos campos.")
+        if (info.balance == null && info.balance?.length === 0) return toast.error("Preencha um dos campos.")
 
         setFetching(true);
 
@@ -120,7 +120,7 @@ const EditUserForm = ({ state }: ModalStateProps) => {
             path: `nubank/${modal.data.user_id}`,
             method: "PUT",
             data: {
-                saldo: ReaisToCents(info.saldo)
+                balance: ReaisToCents(info.balance)
             }
         });
 
@@ -141,8 +141,8 @@ const EditUserForm = ({ state }: ModalStateProps) => {
     return (
         <>
             <TextInput
-                onChange={(evt) => setInfo({ ...info, saldo: evt.target.value })}
-                value={info.saldo}
+                onChange={(evt) => setInfo({ ...info, balance: evt.target.value })}
+                value={info.balance}
                 type="text"
                 icon={LockClosedIcon}
                 placeholder="Nova senha"
@@ -159,12 +159,12 @@ const EditUserForm = ({ state }: ModalStateProps) => {
 
             {newExtract.isOpen && (
                 <Flex flexDirection="col" className="gap-2">
-                    <SelectBox placeholder="Selecione o tipo do extrato...">
+                    <SelectBox placeholder="Selecione o type do extrato...">
                         <SelectBoxItem onClick={() => setNewExtract({
                             ...newExtract,
                             info: {
                                 ...newExtract.info,
-                                tipo: "deposit"
+                                type: "deposit"
                             }
                         })} value="Entrada" />
 
@@ -172,7 +172,7 @@ const EditUserForm = ({ state }: ModalStateProps) => {
                             ...newExtract,
                             info: {
                                 ...newExtract.info,
-                                tipo: "withdraw"
+                                type: "withdraw"
                             }
                         })} value="Saída" />
                     </SelectBox>
@@ -182,7 +182,7 @@ const EditUserForm = ({ state }: ModalStateProps) => {
                             ...newExtract,
                             info: {
                                 ...newExtract.info,
-                                remetente: evt.target.value
+                                title: evt.target.value
                             }
                         })}
                         type="text"
@@ -196,12 +196,12 @@ const EditUserForm = ({ state }: ModalStateProps) => {
                             ...newExtract,
                             info: {
                                 ...newExtract.info,
-                                valor: evt.target.value
+                                value: evt.target.value
                             }
                         })}
                         type="text"
                         icon={LockClosedIcon}
-                        placeholder="Valor do extrato"
+                        placeholder="value do extrato"
                         className="py-2"
                     />
 
@@ -209,7 +209,7 @@ const EditUserForm = ({ state }: ModalStateProps) => {
                         ...newExtract,
                         info: {
                             ...newExtract.info,
-                            data: evt.target.value
+                            date: evt.target.value
                         }
                     })} type="datetime-local" className="w-full p-4 text-sm border rounded-xl" />
                     <Button onClick={() => insertExtract()} className="w-full p-3" icon={PlusIcon}>Criar novo extrato</Button>
@@ -221,10 +221,10 @@ const EditUserForm = ({ state }: ModalStateProps) => {
                 <Table className="w-full max-h-[400px]">
                     <TableHead>
                         <TableRow>
-                            <TableHeaderCell className="bg-white z-[999]">Tipo</TableHeaderCell>
+                            <TableHeaderCell className="bg-white z-[999]">type</TableHeaderCell>
                             <TableHeaderCell className="bg-white z-[999]">Título</TableHeaderCell>
-                            <TableHeaderCell className="bg-white z-[999]">Valor</TableHeaderCell>
-                            <TableHeaderCell className="bg-white z-[999]">Data</TableHeaderCell>
+                            <TableHeaderCell className="bg-white z-[999]">value</TableHeaderCell>
+                            <TableHeaderCell className="bg-white z-[999]">date</TableHeaderCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -245,10 +245,10 @@ const EditUserForm = ({ state }: ModalStateProps) => {
                                 {
                                     info.extracts.map((item) => (
                                         <TableRow onClick={() => deleteThisRow(item.id)} key={item.id} className="relative cursor-pointer after:transition-all after:absolute after:bg-red-500/10 after:w-full after:h-full after:right-0 after:top-0 after:opacity-0 after:rounded-lg hover:after:opacity-100">
-                                            <TableCell>{item.tipo}</TableCell>
-                                            <TableCell>{item.remetente}</TableCell>
-                                            <TableCell>{CentsToReais(item.valor)}</TableCell>
-                                            <TableCell>{moment(item.data).format("DD/MM/YYYY HH:mm:ss")}</TableCell>
+                                            <TableCell>{item.type}</TableCell>
+                                            <TableCell>{item.title}</TableCell>
+                                            <TableCell>{CentsToReais(item.value)}</TableCell>
+                                            <TableCell>{moment(item.date).format("DD/MM/YYYY HH:mm:ss")}</TableCell>
                                         </TableRow>
                                     ))
                                 }
