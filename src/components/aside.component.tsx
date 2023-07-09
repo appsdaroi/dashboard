@@ -30,7 +30,8 @@ const Aside = () => {
     ]
 
     const banks = [
-        "/itau"
+        "/itau",
+        "/nubank"
     ]
 
     const renderAvatar = () => {
@@ -146,6 +147,11 @@ const Aside = () => {
                                     <li>
                                         <Link href="/itau" className={pathname == "/itau" ? "active" : ""}>
                                             <Icon size="sm" icon={CubeTransparentIcon} /> Itaú
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/nubank" className={pathname == "/nubank" ? "active" : ""}>
+                                            <Icon size="sm" icon={CubeTransparentIcon} /> Nubank
                                         </Link>
                                     </li>
                                 </ul>

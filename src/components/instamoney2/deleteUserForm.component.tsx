@@ -29,13 +29,18 @@ const DeleteUserForm = ({ state }: Props) => {
     const submitForm = async () => {
         setFetching(true);
 
+        if (!modal.data.id) {
+            setFetching(false);
+            return toast.error("ID do usuário não encontrado.")
+        }
+
         try {
             const res = await FetchWithToken({
-                path: `avaliadorpremiado/${modal.data.user_id}`,
+                path: `igmoney-admin-users/${modal.data.id}`,
                 method: "DELETE",
             });
 
-            if (res.status !== 200) return toast.error(`Erro ao excluir saldo de ${modal.data.username}.`)
+            if (res.status !== 200) return toast.error(`Erro ao excluir saldo de ${username}.`)
             
             toast.success(`Saldo de ${modal.data.username} foi excluído com sucesso!`)
             setOpenModal(false)
@@ -56,7 +61,7 @@ const DeleteUserForm = ({ state }: Props) => {
             </Flex>
 
 
-            <Button color="red" loading={fetching} loadingText="Excluindo usuário..." onClick={() => submitForm(modal.data)} className="w-full p-3" icon={TrashIcon}>Sim, quero excluir o usuário!</Button>
+            <Button color="red" loading={fetching} loadingText="Excluindo usuário..." onClick={() => submitForm()} className="w-full p-3" icon={TrashIcon}>Sim, quero excluir o usuário!</Button>
         </>
 
     )
