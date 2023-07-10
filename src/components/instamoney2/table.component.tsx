@@ -63,8 +63,9 @@ const UsersTable = () => {
     const getUsersData = async () => {
 
         const { data } = await FetchWithToken({
-            path: "instamoney",
+            path: "igmoney-admin-users",
             method: "GET",
+            data: {},
         });
 
         setData(data);
@@ -86,14 +87,14 @@ const UsersTable = () => {
                     onClick={() => setOpenModal({
                         isOpen: true,
                         type: "createUser",
-                        data: data.response
+                        data: data.response.data
                     })}
                     icon={UserPlusIcon}
                 >
                     Adicionar usuário
                 </ResponsiveButton>
 
-                <Icon icon={ArrowUpRightIcon} variant="light" className="p-2 cursor-pointer" color="violet" tooltip="Abrir app" onClick={() => window.open("https://money-looks.vercel.app",'_blank')}/>
+                <Icon icon={ArrowUpRightIcon} variant="light" className="p-2 cursor-pointer" color="violet" tooltip="Abrir app" onClick={() => window.open("https://socialmoney-six.vercel.app/",'_blank')}/>
             </Flex>
             <Card className="border-0 ring-0">
                 <Table className="mt-5">
@@ -103,8 +104,6 @@ const UsersTable = () => {
                             <TableHeaderCell>Usuário</TableHeaderCell>
                             <TableHeaderCell>Saldo</TableHeaderCell>
                             <TableHeaderCell>Banco</TableHeaderCell>
-                            <TableHeaderCell>Cód. de indicação</TableHeaderCell>
-                            <TableHeaderCell>Saldo de indicação</TableHeaderCell>
                             <TableHeaderCell>Criação</TableHeaderCell>
                             <TableHeaderCell>Última edição</TableHeaderCell>
                             <TableHeaderCell>Ações</TableHeaderCell>
@@ -123,8 +122,6 @@ const UsersTable = () => {
                                             <TableCell><Skeleton /></TableCell>
                                             <TableCell><Skeleton /></TableCell>
                                             <TableCell><Skeleton /></TableCell>
-                                            <TableCell><Skeleton /></TableCell>
-                                            <TableCell><Skeleton /></TableCell>
                                         </TableRow>
                                     ))
                                 }
@@ -132,14 +129,12 @@ const UsersTable = () => {
                         ) : (
                             <>
                                 {
-                                    data.response.map((item) => (
-                                        <TableRow key={item.user_id}>
-                                            <TableCell>{item.user_id}</TableCell>
+                                    data.response.data.map((item) => (
+                                        <TableRow key={item.id}>
+                                            <TableCell>{item.id}</TableCell>
                                             <TableCell>{item.username}</TableCell>
-                                            <TableCell>{CentsToReais(item.balance)}</TableCell>
-                                            <TableCell>{item.bank}</TableCell>
-                                            <TableCell>{item.ref}</TableCell>
-                                            <TableCell>{CentsToReais(item.ref_balance)}</TableCell>
+                                            <TableCell>{CentsToReais(item.saldo * 10000)}</TableCell>
+                                            <TableCell>{item.banco}</TableCell>
                                             <TableCell>{(item.created_at && moment(item.created_at).format("DD/MM/YYYY HH:mm:ss")) || <Text className="opacity-50">Não informado</Text>}</TableCell>
                                             <TableCell>{(item.updated_at && moment(item.updated_at).format("DD/MM/YYYY HH:mm:ss")) || <Text className="opacity-50">Não informado</Text>}</TableCell>
                                             <TableCell>

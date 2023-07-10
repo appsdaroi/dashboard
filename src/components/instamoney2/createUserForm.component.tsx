@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 import { FetchWithToken } from "@/lib/fetch";
 
 import toast from 'react-hot-toast';
-import { UsersIcon, PlusIcon, BanknotesIcon } from "@heroicons/react/24/outline"
+import { UsersIcon, LockClosedIcon, PlusIcon, CalculatorIcon } from "@heroicons/react/24/outline"
 
 import { ReaisToCents } from "@/helpers/money"
 import { formatToBRL } from 'brazilian-values';
@@ -29,7 +29,6 @@ const CreateUserForm = ({ state }: ModalStateProps) => {
 
     const [info, setInfo] = useState({
         balance: "",
-        ref_balance: "",
         user_id: 0,
         bank: ""
     })
@@ -45,7 +44,7 @@ const CreateUserForm = ({ state }: ModalStateProps) => {
             });
 
             if (data.status !== 200) return toast.error("Erro ao consultar lista de usuários.")
-            const removeUsersWithBalance = data.data.filter(k => !modal.data.some(p => p.user_id == k.id));
+            const removeUsersWithBalance = data.data.filter(k => !modal.data.some(p => p.id == k.id));
 
             setUserList(removeUsersWithBalance);
         } catch (err) {
@@ -64,13 +63,12 @@ const CreateUserForm = ({ state }: ModalStateProps) => {
 
         try {
             const { data } = await FetchWithToken({
-                path: "instamoney",
+                path: "igmoney-admin-users",
                 method: "POST",
                 data: {
                     user_id: info.user_id,
-                    bank: info.bank,
-                    balance: ReaisToCents(info.balance),
-                    ref_balance: ReaisToCents(info.ref_balance)
+                    saldo: ReaisToCents(info.balance) / 10000,
+                    banco: info.bank
                 }
             });
 
@@ -111,10 +109,10 @@ const CreateUserForm = ({ state }: ModalStateProps) => {
                     ...info,
                     bank: "itau"
                 })} value="Itaú" icon={UsersIcon} />
-                <SelectBoxItem onClick={() => setInfo({
+                {/* <SelectBoxItem onClick={() => setInfo({
                     ...info,
                     bank: "nubank"
-                })} value="Nubank" icon={UsersIcon} />
+                })} value="nubank" icon={UsersIcon} /> */}
             </SelectBox>
 
             <TextInput
@@ -122,18 +120,8 @@ const CreateUserForm = ({ state }: ModalStateProps) => {
                 onChange={(evt) => setInfo({ ...info, balance: evt.target.value })}
                 value={info.balance}
                 type="text"
-                icon={BanknotesIcon}
+                icon={LockClosedIcon}
                 placeholder="Saldo do usuário"
-                className="py-2"
-            />
-
-            <TextInput
-                onInput={(evt) => formatInputToCurrency(evt.target.value)}
-                onChange={(evt) => setInfo({ ...info, ref_balance: evt.target.value })}
-                value={info.ref_balance}
-                type="text"
-                icon={UsersIcon}
-                placeholder="Saldo de indicação usuário"
                 className="py-2"
             />
 
