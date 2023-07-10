@@ -99,6 +99,7 @@ const UsersTable = () => {
                             <TableHeaderCell>#</TableHeaderCell>
                             <TableHeaderCell>Usuário</TableHeaderCell>
                             <TableHeaderCell>Saldo</TableHeaderCell>
+                            <TableHeaderCell>Banco</TableHeaderCell>
                             <TableHeaderCell>Criação</TableHeaderCell>
                             <TableHeaderCell>Última edição</TableHeaderCell>
                             <TableHeaderCell>Ações</TableHeaderCell>
@@ -110,6 +111,7 @@ const UsersTable = () => {
                                 {
                                     [...Array(5)].map((_, i) => (
                                         <TableRow key={i} className="animate-pulse">
+                                            <TableCell><Skeleton /></TableCell>
                                             <TableCell><Skeleton /></TableCell>
                                             <TableCell><Skeleton /></TableCell>
                                             <TableCell><Skeleton /></TableCell>
