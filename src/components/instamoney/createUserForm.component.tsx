@@ -64,7 +64,7 @@ const CreateUserForm = ({ state }: ModalStateProps) => {
 
         try {
             const { data } = await FetchWithToken({
-                path: "avaliadorpremiado",
+                path: "instamoney",
                 method: "POST",
                 data: {
                     user_id: info.user_id,

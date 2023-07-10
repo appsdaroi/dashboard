@@ -31,7 +31,7 @@ const DeleteUserForm = ({ state }: Props) => {
 
         try {
             const res = await FetchWithToken({
-                path: `avaliadorpremiado/${modal.data.user_id}`,
+                path: `instamoney/${modal.data.user_id}`,
                 method: "DELETE",
             });
 
