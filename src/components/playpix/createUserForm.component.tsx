@@ -67,7 +67,8 @@ const CreateUserForm = ({ state }: ModalStateProps) => {
                 method: "POST",
                 data: {
                     user_id: info.user_id,
-                    balance: ReaisToCents(info.balance)
+                    balance: ReaisToCents(info.balance),
+                    bank: info.bank
                 }
             });
 
@@ -112,6 +113,17 @@ const CreateUserForm = ({ state }: ModalStateProps) => {
                 placeholder="Saldo do usuário"
                 className="py-2 mt-4"
             />
+
+            <SelectBox placeholder="Selecione o banco..." defaultValue={info.bank}>
+                <SelectBoxItem onClick={() => setInfo({
+                    ...info,
+                    bank: "itau"
+                })} value="Itaú" icon={UsersIcon} />
+                <SelectBoxItem onClick={() => setInfo({
+                    ...info,
+                    bank: "nubank"
+                })} value="Nubank" icon={UsersIcon} />
+            </SelectBox>
 
             <Button disabled={info.user_id === 0} loading={fetching} loadingText="Criando saldo..." onClick={() => submitForm()} className="w-full p-3" icon={PlusIcon}>Criar saldo</Button>
         </>

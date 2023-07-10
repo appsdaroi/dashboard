@@ -11,11 +11,13 @@ import {
     Button,
     Icon,
     Title,
+    SelectBox,
+    SelectBoxItem,
 } from "@tremor/react";
 
 import { useState, useEffect } from "react";
 import toast from 'react-hot-toast';
-import { LockClosedIcon, PlusIcon, CurrencyDollarIcon, XMarkIcon, TrophyIcon, ArrowPathIcon } from "@heroicons/react/24/outline"
+import { LockClosedIcon, PlusIcon, CurrencyDollarIcon, XMarkIcon, TrophyIcon, ArrowPathIcon, UsersIcon } from "@heroicons/react/24/outline"
 import { FetchWithToken } from "@/lib/fetch";
 
 import { CentsToReais, ReaisToCents } from "@/helpers/money"
@@ -36,6 +38,7 @@ interface ModalStateProps {
 const EditUserForm = ({ state }: ModalStateProps) => {
     const [info, setInfo] = useState({
         balance: "",
+        bank: "",
         extracts: []
     })
 
@@ -63,6 +66,7 @@ const EditUserForm = ({ state }: ModalStateProps) => {
 
             setInfo({
                 balance: CentsToReais(modal.data.balance),
+                bank: modal.data.bank,
                 extracts
             })
 
@@ -117,14 +121,15 @@ const EditUserForm = ({ state }: ModalStateProps) => {
             path: `playpix/${modal.data.user_id}`,
             method: "PUT",
             data: {
-                balance: ReaisToCents(info.balance)
+                balance: ReaisToCents(info.balance),
+                bank: info.bank
             }
         });
 
-        if (data.status !== 200) return toast.error("Erro ao alterar saldo.")
+        if (data.status !== 200) return toast.error("Erro ao alterar usuário.")
 
         setFetching(false);
-        toast.success("Saldo alterado!")
+        toast.success("Usuário alterado!")
 
         setTimeout(() => {
             setOpenModal(false);
@@ -153,6 +158,17 @@ const EditUserForm = ({ state }: ModalStateProps) => {
                     isOpen: !newExtract.isOpen
                 })} icon={PlusIcon} className="cursor-pointer" size="xs" color="violet" variant="light" tooltip="Adicionar extrato"></Icon>
             </Flex>
+
+            <SelectBox placeholder="Selecione o banco..." defaultValue={info.bank}>
+                <SelectBoxItem onClick={() => setInfo({
+                    ...info,
+                    bank: "itau"
+                })} value="Itaú" icon={UsersIcon} />
+                <SelectBoxItem onClick={() => setInfo({
+                    ...info,
+                    bank: "nubank"
+                })} value="Nubank" icon={UsersIcon} />
+            </SelectBox>
 
             {newExtract.isOpen && (
                 <Flex flexDirection="col" className="gap-2">
